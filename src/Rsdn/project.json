@@ -4,7 +4,7 @@
     "Microsoft.ApplicationInsights": "2.2.0",
     "Microsoft.ApplicationInsights.PersistenceChannel": "1.2.3",
     "Microsoft.ApplicationInsights.WindowsApps": "1.1.1",
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.3.1",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.3",
     "Microsoft.Xaml.Behaviors.Uwp.Managed": "2.0.0",
     "RelayTk": "1.0.0",
     "SimpleInjector": "4.0.0",

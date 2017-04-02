@@ -3,7 +3,7 @@
     "AutoMapper": "6.0.2",
     "FontAwesome.UWP": "4.7.0.9",
     "Humanizer": "2.1.0",
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.3.1",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.3",
     "Microsoft.Xaml.Behaviors.Uwp.Managed": "2.0.0",
     "Polly": "5.0.6",
     "RelayTk": "1.0.0",
