@@ -23,10 +23,10 @@
             this.requestDispatcher = requestDispatcher;
         }
 
-        public string Username
+        public string UserName
         {
             get { return this.username; }
-            set { this.username = value; RaisePropertyChanged(nameof(this.Username)); }
+            set { this.username = value; RaisePropertyChanged(nameof(this.UserName)); }
         }
 
         public string Password
@@ -68,7 +68,7 @@
         }
 
         private bool CanSignin() => this.IsBusy == false &&
-            String.IsNullOrWhiteSpace(this.Username) == false &&
+            String.IsNullOrWhiteSpace(this.UserName) == false &&
             String.IsNullOrWhiteSpace(this.Password) == false;
 
         private async Task Signin()
@@ -76,7 +76,7 @@
             using (this.busySource = new CancellationTokenSource())
             using (Busy())
             {
-                await this.requestDispatcher.ExecuteAsync(new SigninCommand(this.Username, this.Password)
+                await this.requestDispatcher.ExecuteAsync(new SigninCommand(this.UserName, this.Password)
                 {
                     CancellationToken = this.busySource.Token
                 });

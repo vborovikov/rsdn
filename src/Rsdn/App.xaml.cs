@@ -30,14 +30,14 @@
             DatabaseFactory.CreateDatabase();
         }
 
-        protected override async void OnLaunched(LaunchActivatedEventArgs e)
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             var shell = Window.Current.Content as Shell ?? CreateShell();
 
             var viewModelLocator = Configure(shell.PresentationFrame);
             shell.DataContext = viewModelLocator.Shell;
 
-            await HandleResuming(e);
+            HandleResuming(e).Wait(TimeSpan.FromSeconds(1));
 
             if (shell.PresentationFrame.Content == null)
             {
