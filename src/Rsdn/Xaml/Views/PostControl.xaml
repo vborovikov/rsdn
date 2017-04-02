@@ -1,0 +1,140 @@
+﻿<UserControl x:Class="Rsdn.Xaml.Views.PostControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctrl="using:Rsdn.Xaml"
+             xmlns:dm="using:Rsdn.Community"
+             xmlns:i="using:Rsdn.Xaml.Interactivity"
+             xmlns:p="using:Rsdn.Xaml.Views"
+             xmlns:xai="using:Microsoft.Xaml.Interactions.Core"
+             xmlns:xi="using:Microsoft.Xaml.Interactivity">
+
+ <UserControl.Resources>
+  <i:StringToBoolConverter x:Key="StringToBool" />
+ </UserControl.Resources>
+
+ <ctrl:NestingLevelMarker Depth="{Binding Level}">
+  <Grid>
+   <Grid.RowDefinitions>
+    <RowDefinition Height="Auto" />
+    <RowDefinition Height="Auto" />
+    <RowDefinition Height="*" />
+    <RowDefinition Height="Auto" />
+    <RowDefinition Height="Auto" />
+   </Grid.RowDefinitions>
+
+   <xi:Interaction.Behaviors>
+    <xai:DataTriggerBehavior Binding="{Binding Level}"
+                             ComparisonCondition="Equal"
+                             Value="0">
+     <xai:ChangePropertyAction PropertyName="Visibility"
+                               TargetObject="{Binding ElementName=LevelSeparator}"
+                               Value="Collapsed" />
+    </xai:DataTriggerBehavior>
+    <xai:DataTriggerBehavior Binding="{Binding IsReplyingTo}"
+                             Value="True">
+     <xai:ChangePropertyAction PropertyName="Visibility"
+                               TargetObject="{Binding ElementName=ReplyBox}"
+                               Value="Visible" />
+    </xai:DataTriggerBehavior>
+    <xai:DataTriggerBehavior Binding="{Binding IsReplyingTo}"
+                             Value="False">
+     <xai:ChangePropertyAction PropertyName="Visibility"
+                               TargetObject="{Binding ElementName=ReplyBox}"
+                               Value="Collapsed" />
+    </xai:DataTriggerBehavior>
+   </xi:Interaction.Behaviors>
+
+   <TextBlock x:Name="Title"
+              i:BooleanForeground.FalseForeground="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+              i:BooleanForeground.TrueForeground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+              i:BooleanForeground.Value="{Binding IsNew}"
+              FontWeight="Bold"
+              Text="{Binding Title}"
+              TextWrapping="Wrap" />
+
+   <TextBlock x:Name="Username"
+              Grid.Row="1"
+              Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+              Style="{ThemeResource CaptionTextBlockStyle}">
+    <Run Text="{Binding Username}" />
+    <Run Text="&#xb7;" />
+    <Run Text="{Binding Posted}" />
+    <Run i:BooleanForeground.FalseForeground="{ThemeResource SystemControlForegroundTransparentBrush}"
+         i:BooleanForeground.TrueForeground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+         i:BooleanForeground.Value="{Binding Ratings,
+                                             Converter={StaticResource StringToBool}}"
+         Text="&#xb7;" />
+    <Run Text="{Binding Ratings}" />
+   </TextBlock>
+
+   <ctrl:MarkupBox x:Name="Message"
+                   Grid.Row="2"
+                   Text="{Binding Message}"
+                   TextWrapping="WrapWholeWords" />
+
+   <StackPanel Grid.Row="3"
+               Margin="-8,0,0,0"
+               Orientation="Horizontal">
+    <Button x:Uid="PostControlReplyButton"
+            x:Name="PostControlReplyButton"
+            Command="{Binding ReplyCommand}"
+            Style="{ThemeResource TextBlockButtonStyle}" />
+    <Button x:Uid="PostControlRateButton"
+            Style="{ThemeResource TextBlockButtonStyle}">
+     <Button.Flyout>
+      <MenuFlyout Placement="Bottom">
+       <MenuFlyoutItem x:Uid="PostControlInterestingRate"
+                       Command="{Binding VoteCommand}"
+                       CommandParameter="Interesting" />
+       <MenuFlyoutItem x:Uid="PostControlThanksRate"
+                       Command="{Binding VoteCommand}"
+                       CommandParameter="Thanks" />
+       <MenuFlyoutItem x:Uid="PostControlExcellentRate"
+                       Command="{Binding VoteCommand}"
+                       CommandParameter="Excellent" />
+       <MenuFlyoutItem x:Uid="PostControlPlus1Rate"
+                       Command="{Binding VoteCommand}"
+                       CommandParameter="Plus1" />
+       <MenuFlyoutSeparator />
+       <MenuFlyoutItem x:Uid="PostControlAgreedRate"
+                       Command="{Binding VoteCommand}"
+                       CommandParameter="Agreed" />
+       <MenuFlyoutItem x:Uid="PostControlDisagreedRate"
+                       Command="{Binding VoteCommand}"
+                       CommandParameter="Disagreed" />
+       <MenuFlyoutSeparator />
+       <MenuFlyoutItem x:Uid="PostControlFunnyRate"
+                       Command="{Binding VoteCommand}"
+                       CommandParameter="Funny" />
+       <MenuFlyoutSeparator />
+       <MenuFlyoutItem x:Uid="PostControlRemoveRate"
+                       Command="{Binding VoteCommand}"
+                       CommandParameter="None" />
+      </MenuFlyout>
+     </Button.Flyout>
+    </Button>
+   </StackPanel>
+
+   <StackPanel x:Name="ReplyBox"
+               Grid.Row="4"
+               Orientation="Vertical"
+               Visibility="Collapsed">
+    <StackPanel.Transitions>
+     <TransitionCollection>
+      <PaneThemeTransition />
+     </TransitionCollection>
+    </StackPanel.Transitions>
+    <TextBox Text="{Binding ReplyTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    <p:TextEditor Text="{Binding ReplyMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    <StackPanel Orientation="Horizontal">
+     <Button Margin="0,12,12,12"
+             Command="{Binding CommitReplyCommand}"
+             Content="Reply" />
+     <Button Margin="0,12,12,12"
+             Command="{Binding CancelReplyCommand}"
+             Content="Cancel" />
+    </StackPanel>
+   </StackPanel>
+  </Grid>
+ </ctrl:NestingLevelMarker>
+</UserControl>

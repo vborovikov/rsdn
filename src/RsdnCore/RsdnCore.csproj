@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A91A826A-E0F7-4409-B81A-F036F37F32DD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Rsdn</RootNamespace>
+    <AssemblyName>RsdnCore</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Client\Editor\TagAttribute.cs" />
+    <Compile Include="Client\Editor\TextFormat.cs" />
+    <None Include="project.json" />
+    <!-- A reference to the entire .NET Framework is automatically included -->
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Client\Editor\FormatAction.cs" />
+    <Compile Include="Community\ForumSymbols.cs" />
+    <Compile Include="Community\Interaction\Requests\CommandBase.cs" />
+    <Compile Include="Community\Interaction\Requests\EventBase.cs" />
+    <Compile Include="Community\Interaction\Requests\Forums\FavoritesChangedEvent.cs" />
+    <Compile Include="Community\Interaction\Requests\Forums\ForumVisitedEvent.cs" />
+    <Compile Include="Community\Interaction\Requests\IAsyncEventHandler.cs" />
+    <Compile Include="Community\Interaction\Requests\IEvent.cs" />
+    <Compile Include="Community\Interaction\Requests\IEventDispatcher.cs" />
+    <Compile Include="Community\Interaction\Requests\IEventHandler.cs" />
+    <Compile Include="Community\Interaction\Requests\Posts\PostControl.cs" />
+    <Compile Include="Community\Interaction\Requests\Posts\PostsQuery.cs" />
+    <Compile Include="Community\Interaction\Requests\Posts\VotesQuery.cs" />
+    <Compile Include="Community\Interaction\Requests\QueryBase.cs" />
+    <Compile Include="Community\Interaction\Requests\RequestBase.cs" />
+    <Compile Include="Community\Interaction\Requests\Update\UpdateControl.cs" />
+    <Compile Include="Community\CredentialExtensions.cs" />
+    <Compile Include="Community\Presentation\ActivityViewModel.cs" />
+    <Compile Include="Community\Presentation\ItemsState.cs" />
+    <Compile Include="Community\IIdentifiable.cs" />
+    <Compile Include="Community\CredentialVerificationResult.cs" />
+    <Compile Include="Community\PostTopic.cs" />
+    <Compile Include="Community\Presentation\DataViewModel.cs" />
+    <Compile Include="Community\Presentation\DialogAttribute.cs" />
+    <Compile Include="Community\Presentation\DialogViewModel.cs" />
+    <Compile Include="Community\Presentation\DirectoryViewModel.cs" />
+    <Compile Include="Community\Presentation\ForumViewModel.cs" />
+    <Compile Include="Community\Presentation\IDialogContext.cs" />
+    <Compile Include="Community\Presentation\IDialogManager.cs" />
+    <Compile Include="Community\Presentation\IPresenterHost.cs" />
+    <Compile Include="Community\Presentation\IPresenterProvider.cs" />
+    <Compile Include="Community\Presentation\NavigationModel\INavigable.cs" />
+    <Compile Include="Community\Presentation\NavigationModel\INavigationService.cs" />
+    <Compile Include="Community\Presentation\NavigationModel\ITombstone.cs" />
+    <Compile Include="Community\Presentation\NavigationModel\NavigablePresenterHost.cs" />
+    <Compile Include="Community\Presentation\NavigationModel\NavigableAttribute.cs" />
+    <Compile Include="Community\Presentation\NavigationModel\NavigablePresenter.cs" />
+    <Compile Include="Community\Presentation\PostsViewModel.cs" />
+    <Compile Include="Community\Presentation\PostViewModel.cs" />
+    <Compile Include="Community\Presentation\NewPostPresenter.cs" />
+    <Compile Include="Community\Presentation\ShellViewModel.cs" />
+    <Compile Include="Community\Presentation\SigninViewModel.cs" />
+    <Compile Include="Community\Presentation\ThreadViewModel.cs" />
+    <Compile Include="Community\Presentation\PresenterExtensions.cs" />
+    <Compile Include="Community\Presentation\PresenterLocator.cs" />
+    <Compile Include="Community\Presentation\VotesViewModel.cs" />
+    <Compile Include="Community\Votes.cs" />
+    <Compile Include="Community\VotesExtensions.cs" />
+    <Compile Include="Community\VoteValue.cs" />
+    <Compile Include="Community\ReplyMode.cs" />
+    <Compile Include="Client\Data\IForumGateway.cs" />
+    <Compile Include="Client\Data\IGateway.cs" />
+    <Compile Include="Community\Interaction\Requests\Forums\ForumControl.cs" />
+    <Compile Include="Community\Interaction\Requests\Credentials\CredentialControl.cs" />
+    <Compile Include="Client\Data\IPostGateway.cs" />
+    <Compile Include="Community\Interaction\Requests\Forums\ForumQuery.cs" />
+    <Compile Include="Community\Interaction\Requests\Posts\VotePostCommand.cs" />
+    <Compile Include="Community\Interaction\Requests\Posts\NewPostCommand.cs" />
+    <Compile Include="Client\ThreadOrganizer.cs" />
+    <Compile Include="Markup\BlockTagReference.cs" />
+    <Compile Include="Markup\CiteContentReference.cs" />
+    <Compile Include="Markup\CodeBlockTagReference.cs" />
+    <Compile Include="Markup\CodeLanguage.cs" />
+    <Compile Include="Markup\ICodeBlockTagReference.cs" />
+    <Compile Include="Markup\ITagReference.cs" />
+    <Compile Include="Markup\SpecialContent.cs" />
+    <Compile Include="Markup\SpecialContentReference.cs" />
+    <Compile Include="Markup\Content.cs" />
+    <Compile Include="Markup\ContentPosition.cs" />
+    <Compile Include="Markup\ContentReference.cs" />
+    <Compile Include="Markup\CustomTags\SkipTagReference.cs" />
+    <Compile Include="Markup\EmailTagReference.cs" />
+    <Compile Include="Markup\EmojiReference.cs" />
+    <Compile Include="Markup\HyperlinkTagReference.cs" />
+    <Compile Include="Markup\ImageTagReference.cs" />
+    <Compile Include="Markup\InlineTagReference.cs" />
+    <Compile Include="Markup\MarkupReference.cs" />
+    <Compile Include="Markup\MarkupRoot.cs" />
+    <Compile Include="Markup\MsdnTagReference.cs" />
+    <Compile Include="Markup\Primitives\ClosingTag.cs" />
+    <Compile Include="Markup\Primitives\OpeningTag.cs" />
+    <Compile Include="Markup\Primitives\PlainText.cs" />
+    <Compile Include="Markup\Rendering\BlockType.cs" />
+    <Compile Include="Markup\Rendering\ContentType.cs" />
+    <Compile Include="Markup\Rendering\InlineType.cs" />
+    <Compile Include="Markup\Rendering\IRenderer.cs" />
+    <Compile Include="Markup\Rendering\RendererBase.cs" />
+    <Compile Include="Markup\RootTagReference.cs" />
+    <Compile Include="Markup\RsdnMarkupReference.cs" />
+    <Compile Include="Markup\Tag.cs" />
+    <Compile Include="Markup\TagReference.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Community\Interaction\Requests\Credentials\CredentialQuery.cs" />
+    <Compile Include="Community\Interaction\Requests\Credentials\CredentialVerificationEvent.cs" />
+    <Compile Include="Community\Interaction\Requests\Forums\AddForumToFavoritesCommand.cs" />
+    <Compile Include="Community\Interaction\Requests\Forums\FavoriteForumsQuery.cs" />
+    <Compile Include="Community\Interaction\Requests\Forums\GroupsQuery.cs" />
+    <Compile Include="Community\Interaction\Requests\Forums\MarkForumAsVisitedCommand.cs" />
+    <Compile Include="Community\Interaction\Requests\Forums\RecentForumsQuery.cs" />
+    <Compile Include="Community\Interaction\Requests\Forums\RemoveForumFromFavoritesCommand.cs" />
+    <Compile Include="Community\Interaction\Requests\Forums\ForumThreadsQuery.cs" />
+    <Compile Include="Community\Interaction\Requests\Credentials\HasCredentialQuery.cs" />
+    <Compile Include="Community\Interaction\Requests\Posts\MarkThreadAsViewedCommand.cs" />
+    <Compile Include="Community\Interaction\Requests\Credentials\SigninCommand.cs" />
+    <Compile Include="Community\Interaction\Requests\Posts\ThreadPostsQuery.cs" />
+    <Compile Include="Community\Interaction\Requests\Update\UpdateDirectoryCommand.cs" />
+    <Compile Include="Community\Interaction\Requests\Update\UpdateForumCommand.cs" />
+    <Compile Include="Community\Interaction\Requests\Credentials\VerifyCredentialQuery.cs" />
+    <Compile Include="Community\Interaction\ForumDetails.cs" />
+    <Compile Include="Community\Interaction\ForumHub.cs" />
+    <Compile Include="Community\Interaction\ForumStatus.cs" />
+    <Compile Include="Community\Interaction\GroupDetails.cs" />
+    <Compile Include="Community\Interaction\PostDetails.cs" />
+    <Compile Include="Community\IVotes.cs" />
+    <Compile Include="Community\Interaction\ThreadDetails.cs" />
+    <Compile Include="Client\ICredentialManager.cs" />
+    <Compile Include="Client\IUpdateManager.cs" />
+    <Compile Include="Text\Number.cs" />
+    <Compile Include="Text\Other.cs" />
+    <Compile Include="Text\PunctuationMark.cs" />
+    <Compile Include="Text\Scanners\ITokenScanner.cs" />
+    <Compile Include="Text\Scanners\NumberScanner.cs" />
+    <Compile Include="Text\Scanners\OtherScanner.cs" />
+    <Compile Include="Text\Scanners\PunctuationMarkScanner.cs" />
+    <Compile Include="Text\Scanners\SymbolScanner.cs" />
+    <Compile Include="Text\Scanners\WhiteSpaceScanner.cs" />
+    <Compile Include="Text\Scanners\WordScanner.cs" />
+    <Compile Include="Text\Symbol.cs" />
+    <Compile Include="Text\Token.cs" />
+    <Compile Include="Text\TokenCategory.cs" />
+    <Compile Include="Text\Tokenizer.cs" />
+    <Compile Include="Text\StringExtensions.cs" />
+    <Compile Include="Text\Whitespace.cs" />
+    <Compile Include="Text\Word.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

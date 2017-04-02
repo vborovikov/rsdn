@@ -1,0 +1,17 @@
+﻿<xa:NavigablePage x:Class="Rsdn.Xaml.ActivityPage"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:view="using:Rsdn.Xaml.Views"
+                  xmlns:xa="using:Rsdn.Xaml">
+ <Grid>
+  <Grid.ColumnDefinitions>
+   <ColumnDefinition Width="0.4*" />
+   <ColumnDefinition Width="0.6*" />
+  </Grid.ColumnDefinitions>
+
+  <view:ActivityView DataContext="{Binding}" />
+
+  <view:ThreadView Grid.Column="1"
+                   DataContext="{Binding CurrentThread}" />
+ </Grid>
+</xa:NavigablePage>

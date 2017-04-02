@@ -1,0 +1,273 @@
+﻿<UserControl x:Class="Rsdn.Xaml.Views.TextEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctrl="using:Rsdn.Xaml.Controls"
+             xmlns:edit="using:Rsdn.Client.Editor">
+
+ <Grid>
+  <Grid.RowDefinitions>
+   <RowDefinition Height="Auto" />
+   <RowDefinition Height="*" />
+  </Grid.RowDefinitions>
+
+  <Grid.ColumnDefinitions>
+   <ColumnDefinition Width="Auto" />
+   <ColumnDefinition Width="*" />
+   <ColumnDefinition Width="Auto" />
+  </Grid.ColumnDefinitions>
+
+  <StackPanel Orientation="Horizontal">
+   <ToggleSwitch IsOn="True"
+                 OffContent="Markdown"
+                 OnContent="Markup" />
+  </StackPanel>
+
+  <StackPanel Grid.Column="2"
+              Orientation="Horizontal">
+   <!--  Edit  -->
+   <Button>
+    <SymbolIcon Symbol="Edit" />
+    <Button.Flyout>
+     <MenuFlyout Placement="Bottom">
+      <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionBold"
+                                Command="{Binding Command}"
+                                Glyph="&#xE19B;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>Bold</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+      <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionItalic"
+                                Command="{Binding Command}"
+                                Glyph="&#xE199;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>Italic</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+      <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionStrikethrough"
+                                Command="{Binding Command}"
+                                Glyph="&#xE738;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>Strikethrough</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+      <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionUnderline"
+                                Command="{Binding Command}"
+                                Glyph="&#xE8DC;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>Underline</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+      <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionSuperscript"
+                                Command="{Binding Command}"
+                                Glyph="&#xE84B;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>Superscript</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+      <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionSubscript"
+                                Command="{Binding Command}"
+                                Glyph="&#xE84A;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>Subscript</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+      <MenuFlyoutSeparator />
+      <MenuFlyoutSubItem x:Uid="TextEditorActionHeading">
+       <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionHeading1"
+                                 Command="{Binding Command}"
+                                 Glyph="&#xE8E9;">
+        <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+         <edit:FormatAction>Heading1</edit:FormatAction>
+        </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+       </ctrl:GlyphMenuFlyoutItem>
+       <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionHeading2"
+                                 Command="{Binding Command}"
+                                 Glyph="&#xE8E9;">
+        <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+         <edit:FormatAction>Heading2</edit:FormatAction>
+        </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+       </ctrl:GlyphMenuFlyoutItem>
+       <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionHeading3"
+                                 Command="{Binding Command}"
+                                 Glyph="&#xE8E9;">
+        <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+         <edit:FormatAction>Heading3</edit:FormatAction>
+        </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+       </ctrl:GlyphMenuFlyoutItem>
+       <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionHeading4"
+                                 Command="{Binding Command}"
+                                 Glyph="&#xE8E9;">
+        <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+         <edit:FormatAction>Heading4</edit:FormatAction>
+        </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+       </ctrl:GlyphMenuFlyoutItem>
+       <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionHeading5"
+                                 Command="{Binding Command}"
+                                 Glyph="&#xE8E9;">
+        <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+         <edit:FormatAction>Heading5</edit:FormatAction>
+        </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+       </ctrl:GlyphMenuFlyoutItem>
+       <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionHeading6"
+                                 Command="{Binding Command}"
+                                 Glyph="&#xE8E9;">
+        <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+         <edit:FormatAction>Heading6</edit:FormatAction>
+        </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+       </ctrl:GlyphMenuFlyoutItem>
+      </MenuFlyoutSubItem>
+     </MenuFlyout>
+    </Button.Flyout>
+   </Button>
+   <!--  Format  -->
+   <Button>
+    <SymbolIcon Symbol="Attach" />
+    <Button.Flyout>
+     <MenuFlyout Placement="Bottom">
+      <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionLink"
+                                Command="{Binding Command}"
+                                Glyph="&#xE71B;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>Link</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+      <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionImage"
+                                Command="{Binding Command}"
+                                Glyph="&#xEB9F;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>Image</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+      <MenuFlyoutSeparator />
+      <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionQuote"
+                                Command="{Binding Command}"
+                                Glyph="&#xE90A;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>Quote</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+      <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionCollapse"
+                                Command="{Binding Command}"
+                                Glyph="&#xE8C6;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>Collapse</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+     </MenuFlyout>
+    </Button.Flyout>
+   </Button>
+   <!--  Emoji  -->
+   <Button Command="{Binding Command}">
+    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}"
+              Glyph="&#xED59;" />
+    <Button.Flyout>
+     <MenuFlyout x:Name="EmojiMenu"
+                 Placement="Bottom" />
+    </Button.Flyout>
+   </Button>
+   <!--  Code  -->
+   <Button Command="{Binding Command}">
+    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}"
+              Glyph="&#xE943;" />
+    <Button.Flyout>
+     <MenuFlyout x:Name="LangMenu"
+                 Placement="Bottom">
+      <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionCodeInline"
+                                Command="{Binding Command}"
+                                Glyph="&#xE765;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>CodeInline</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+      <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionCodeBlock"
+                                Command="{Binding Command}"
+                                Glyph="&#xE943;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>CodeBlock</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+      <MenuFlyoutSeparator />
+      <ctrl:GlyphMenuFlyoutItem Text="C"
+                                Command="{Binding Command}"
+                                Glyph="&#xE943;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>CodeC</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+      <ctrl:GlyphMenuFlyoutItem Text="C++"
+                                Command="{Binding Command}"
+                                Glyph="&#xE943;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>CodeCPlusPlus</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+      <ctrl:GlyphMenuFlyoutItem Text="C#"
+                                Command="{Binding Command}"
+                                Glyph="&#xE943;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>CodeCSharp</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+      <ctrl:GlyphMenuFlyoutItem Text="Java"
+                                Command="{Binding Command}"
+                                Glyph="&#xE943;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>CodeJava</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+      <ctrl:GlyphMenuFlyoutItem Text="XML"
+                                Command="{Binding Command}"
+                                Glyph="&#xE943;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>CodeXml</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+      <ctrl:GlyphMenuFlyoutItem Text="SQL"
+                                Command="{Binding Command}"
+                                Glyph="&#xE943;">
+       <ctrl:GlyphMenuFlyoutItem.CommandParameter>
+        <edit:FormatAction>CodeSql</edit:FormatAction>
+       </ctrl:GlyphMenuFlyoutItem.CommandParameter>
+      </ctrl:GlyphMenuFlyoutItem>
+     </MenuFlyout>
+    </Button.Flyout>
+   </Button>
+   <!--  List  -->
+   <Button>
+    <SymbolIcon Symbol="List" />
+    <Button.Flyout>
+     <MenuFlyout Placement="Bottom">
+      <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionList"
+                                Command="{Binding Command}"
+                                Glyph="&#xE8FD;" />
+      <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionListItem"
+                                Command="{Binding Command}"
+                                Glyph="&#xE73C;" />
+      <MenuFlyoutSeparator />
+      <ctrl:GlyphMenuFlyoutItem x:Uid="TextEditorActionTable"
+                                Command="{Binding Command}"
+                                Glyph="&#xE8A9;" />
+     </MenuFlyout>
+    </Button.Flyout>
+   </Button>
+  </StackPanel>
+
+  <TextBox Name="TextBox"
+           Grid.Row="1"
+           Grid.ColumnSpan="3"
+           MaxHeight="300"
+           AcceptsReturn="True"
+           InputScope="Text"
+           IsColorFontEnabled="True"
+           IsSpellCheckEnabled="True"
+           IsTextPredictionEnabled="True"
+           ScrollViewer.VerticalScrollBarVisibility="Auto"
+           SelectedText="{Binding SelectedText,
+                                  Mode=TwoWay,
+                                  UpdateSourceTrigger=PropertyChanged}"
+           Text="{Binding Text,
+                          Mode=TwoWay,
+                          UpdateSourceTrigger=PropertyChanged}"
+           TextWrapping="Wrap" />
+ </Grid>
+</UserControl>

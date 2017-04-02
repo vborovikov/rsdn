@@ -1,0 +1,95 @@
+﻿<UserControl x:Class="Rsdn.Xaml.Views.ThreadSummary"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:fa="using:FontAwesome.UWP"
+             xmlns:i="using:Rsdn.Xaml.Interactivity">
+
+ <UserControl.Resources>
+  <i:PostTopicToIconConverter x:Key="PostTopicToIcon" />
+ </UserControl.Resources>
+
+ <Grid>
+  <Grid.RowDefinitions>
+   <!--  Username, post count, time  -->
+   <RowDefinition Height="Auto" />
+   <!--  Title  -->
+   <RowDefinition Height="*" />
+   <!--  Excerpt  -->
+   <RowDefinition Height="Auto" />
+   <!--  Ratings  -->
+   <RowDefinition Height="Auto" />
+  </Grid.RowDefinitions>
+  <Grid.ColumnDefinitions>
+   <!--  Avatar  -->
+   <ColumnDefinition Width="Auto" />
+   <!--  Username  -->
+   <ColumnDefinition Width="Auto" />
+   <!--  Title  -->
+   <ColumnDefinition Width="*" />
+   <!--  Post count, Time, Ratings  -->
+   <ColumnDefinition Width="Auto" />
+  </Grid.ColumnDefinitions>
+
+  <!--  Topic  -->
+  <fa:FontAwesome Grid.RowSpan="4"
+                  Width="48"
+                  Height="48"
+                  Margin="0"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top"
+                  FontSize="24"
+                  Foreground="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                  Icon="{Binding Topic,
+                                 Converter={StaticResource PostTopicToIcon}}" />
+
+  <!--  Username  -->
+  <TextBlock Grid.Column="1"
+             FontWeight="Bold"
+             Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+             Style="{ThemeResource CaptionTextBlockStyle}"
+             Text="{Binding Username}" />
+
+  <TextBlock Grid.Column="2"
+             Grid.ColumnSpan="2"
+             HorizontalAlignment="Right"
+             Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+             Style="{ThemeResource CaptionTextBlockStyle}">
+   <!--  Post count  -->
+   <Run Text="{Binding PostCount}" />
+   <Run Text="&#xb7;" />
+   <!--  Time  -->
+   <Run Text="{Binding Updated}" />
+  </TextBlock>
+
+  <!--  Title  -->
+  <TextBlock Grid.Row="1"
+             Grid.Column="1"
+             Grid.ColumnSpan="3"
+             i:BooleanForeground.FalseForeground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+             i:BooleanForeground.TrueForeground="{ThemeResource SystemControlForegroundAccentBrush}"
+             i:BooleanForeground.Value="{Binding IsNew}"
+             FontWeight="Bold"
+             Text="{Binding Title}"
+             TextWrapping="Wrap" />
+
+  <!--  Excerpt  -->
+  <TextBlock Grid.Row="2"
+             Grid.Column="1"
+             Grid.ColumnSpan="3"
+             Style="{ThemeResource CaptionTextBlockStyle}"
+             Text="{Binding Excerpt}"
+             TextTrimming="CharacterEllipsis"
+             TextWrapping="NoWrap" />
+
+  <!--  Ratings  -->
+  <TextBlock Grid.Row="3"
+             Grid.Column="1"
+             Grid.ColumnSpan="3"
+             HorizontalAlignment="Right"
+             Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+             Style="{ThemeResource BodyTextBlockStyle}"
+             Text="{Binding Ratings}"
+             TextTrimming="None"
+             TextWrapping="NoWrap" />
+ </Grid>
+</UserControl>

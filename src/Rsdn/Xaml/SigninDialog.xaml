@@ -1,0 +1,38 @@
+﻿<ContentDialog x:Class="Rsdn.Xaml.SigninDialog"
+               x:Uid="SigninDialog"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:i="using:Rsdn.Xaml.Interactivity"
+               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               mc:Ignorable="d"
+               FullSizeDesired="False">
+
+ <RelativePanel>
+  <TextBlock Name="UsernameLabel"
+             x:Uid="SigninDialogLabelUsername"
+             Margin="0,4" />
+  <TextBox Name="UsernameInput"
+           Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+           Margin="0,4"
+           RelativePanel.Below="UsernameLabel"
+           RelativePanel.AlignLeftWithPanel="True"
+           RelativePanel.AlignRightWithPanel="True" />
+  <TextBlock Name="PasswordLabel"
+             x:Uid="SigninDialogLabelPassword"
+             Margin="0,4"
+             RelativePanel.Below="UsernameInput" />
+  <PasswordBox Name="PasswordInput"
+               Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+               Margin="0,4"
+               RelativePanel.Below="PasswordLabel"
+               RelativePanel.AlignRightWithPanel="True"
+               RelativePanel.AlignLeftWithPanel="True" />
+  <HyperlinkButton Name="SignupButton"
+                   x:Uid="SigninDialogButtonSignup"
+                   Margin="0,4"
+                   NavigateUri="http://rsdn.ru"
+                   RelativePanel.Below="PasswordInput"
+                   RelativePanel.AlignLeftWithPanel="True" />
+ </RelativePanel>
+</ContentDialog>

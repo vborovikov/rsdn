@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PostControlAgreedRate.Text" xml:space="preserve">
+    <value>👍 Согласен</value>
+  </data>
+  <data name="PostControlDisagreedRate.Text" xml:space="preserve">
+    <value>👎 Не согласен</value>
+  </data>
+  <data name="PostControlExcellentRate.Text" xml:space="preserve">
+    <value>🆒 Супер</value>
+  </data>
+  <data name="PostControlFunnyRate.Text" xml:space="preserve">
+    <value>☺ Смешно</value>
+  </data>
+  <data name="PostControlInterestingRate.Text" xml:space="preserve">
+    <value>🆗 Интересно</value>
+  </data>
+  <data name="PostControlPlus1Rate.Text" xml:space="preserve">
+    <value>👌 +1</value>
+  </data>
+  <data name="PostControlRateButton.Content" xml:space="preserve">
+    <value>Оценить</value>
+  </data>
+  <data name="PostControlRemoveRate.Text" xml:space="preserve">
+    <value>Убрать оценку</value>
+  </data>
+  <data name="PostControlReplyButton.Content" xml:space="preserve">
+    <value>Ответить</value>
+  </data>
+  <data name="PostControlThanksRate.Text" xml:space="preserve">
+    <value>🆙 Спасибо</value>
+  </data>
+  <data name="SigninDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Войти</value>
+  </data>
+  <data name="SigninDialog.SecondaryButtonText" xml:space="preserve">
+    <value>Отменить</value>
+  </data>
+  <data name="SigninDialog.Title" xml:space="preserve">
+    <value>Учётная запись RSDN</value>
+  </data>
+  <data name="SigninDialogButtonSignup.Content" xml:space="preserve">
+    <value>Зарегистрироваться в RSDN</value>
+  </data>
+  <data name="SigninDialogLabelPassword.Text" xml:space="preserve">
+    <value>Пароль:</value>
+  </data>
+  <data name="SigninDialogLabelUsername.Text" xml:space="preserve">
+    <value>Имя пользователя:</value>
+  </data>
+  <data name="TextEditorActionBold.Text" xml:space="preserve">
+    <value>Жирный</value>
+  </data>
+  <data name="TextEditorActionItalic.Text" xml:space="preserve">
+    <value>Курсив</value>
+  </data>
+  <data name="TextEditorActionCode.Text" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="TextEditorActionCollapse.Text" xml:space="preserve">
+    <value>Скрытый раздел</value>
+  </data>
+  <data name="TextEditorActionHeading.Text" xml:space="preserve">
+    <value>Заголовок</value>
+  </data>
+  <data name="TextEditorActionHeading1.Text" xml:space="preserve">
+    <value>Заголовок 1</value>
+  </data>
+  <data name="TextEditorActionHeading2.Text" xml:space="preserve">
+    <value>Заголовок 2</value>
+  </data>
+  <data name="TextEditorActionHeading3.Text" xml:space="preserve">
+    <value>Заголовок 3</value>
+  </data>
+  <data name="TextEditorActionHeading4.Text" xml:space="preserve">
+    <value>Заголовок 4</value>
+  </data>
+  <data name="TextEditorActionHeading5.Text" xml:space="preserve">
+    <value>Заголовок 5</value>
+  </data>
+  <data name="TextEditorActionHeading6.Text" xml:space="preserve">
+    <value>Заголовок 6</value>
+  </data>
+  <data name="TextEditorActionImage.Text" xml:space="preserve">
+    <value>Изображение</value>
+  </data>
+  <data name="TextEditorActionLink.Text" xml:space="preserve">
+    <value>Ссылка</value>
+  </data>
+  <data name="TextEditorActionQuote.Text" xml:space="preserve">
+    <value>Цитата</value>
+  </data>
+  <data name="TextEditorActionStrikethrough.Text" xml:space="preserve">
+    <value>Перечёркнутый</value>
+  </data>
+  <data name="TextEditorActionSubscript.Text" xml:space="preserve">
+    <value>Нижний индекс</value>
+  </data>
+  <data name="TextEditorActionSuperscript.Text" xml:space="preserve">
+    <value>Верхний индекс</value>
+  </data>
+  <data name="TextEditorActionUnderline.Text" xml:space="preserve">
+    <value>Подчёркнутый</value>
+  </data>
+  <data name="TextEditorActionUnorderedList.Text" xml:space="preserve">
+    <value>Неупорядоченный список</value>
+  </data>
+  <data name="TextEditorActionListItem.Text" xml:space="preserve">
+    <value>Элемент списка</value>
+  </data>
+  <data name="TextEditorActionCodeInline.Text" xml:space="preserve">
+    <value>Строка кода</value>
+  </data>
+  <data name="TextEditorActionList.Text" xml:space="preserve">
+    <value>Список</value>
+  </data>
+  <data name="TextEditorActionTable.Text" xml:space="preserve">
+    <value>Таблица</value>
+  </data>
+  <data name="TextEditorActionCodeBlock.Text" xml:space="preserve">
+    <value>Блок кода</value>
+  </data>
+</root>
