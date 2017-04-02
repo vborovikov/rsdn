@@ -8,9 +8,9 @@
 
     public interface IPostGateway : IGateway
     {
-        ThreadDetails GetThread(int threadId);
+        ThreadModel GetThread(int threadId);
 
-        IEnumerable<PostDetails> GetThreadPosts(int threadId);
+        IEnumerable<PostModel> GetThreadPosts(int threadId);
 
         void MarkThreadAsViewed(int threadId);
     }

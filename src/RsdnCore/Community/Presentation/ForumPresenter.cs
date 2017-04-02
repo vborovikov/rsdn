@@ -11,14 +11,14 @@
     using IUwpCommand = System.Windows.Input.ICommand;
 
     [Navigable("Rsdn.Xaml.ForumPage, Rsdn")]
-    public class ForumViewModel : ActivityViewModel
+    public class ForumPresenter : ActivityPresenter
     {
-        private ForumDetails data;
+        private ForumModel data;
 
-        public ForumViewModel(IPresenterHost host)
+        public ForumPresenter(IPresenterHost host)
             : base(host)
         {
-            this.data = ForumDetails.Empty;
+            this.data = ForumModel.Empty;
         }
 
         public int Id => this.data.Id;
@@ -58,7 +58,7 @@
             }
         }
 
-        protected override IQuery<IEnumerable<ThreadDetails>> GetThreadsQuery()
+        protected override IQuery<IEnumerable<ThreadModel>> GetThreadsQuery()
         {
             return new ForumThreadsQuery(this.data.Id);
         }

@@ -27,7 +27,7 @@
                                    Mode=TwoWay}"
             SelectionMode="None">
    <ListView.ItemTemplate>
-    <DataTemplate x:DataType="pm:PostViewModel">
+    <DataTemplate x:DataType="pm:PostPresenter">
      <p:PostControl />
     </DataTemplate>
    </ListView.ItemTemplate>

@@ -12,14 +12,14 @@
     using NavigationModel;
 
     [Navigable("Rsdn.Xaml.DirectoryPage, Rsdn")]
-    public class DirectoryViewModel : NavigablePresenter
+    public class DirectoryPresenter : NavigablePresenter
     {
         private readonly IPresenterHost host;
 
-        public DirectoryViewModel(IPresenterHost host)
+        public DirectoryPresenter(IPresenterHost host)
         {
             this.host = host;
-            this.Groups = new ObservableCollection<GroupDetails>();
+            this.Groups = new ObservableCollection<GroupModel>();
             //this.Forums = (new CollectionViewSource
             //{
             //    Source = this.groups,
@@ -28,13 +28,13 @@
             //}).View;
         }
 
-        public ObservableCollection<GroupDetails> Groups { get; }
+        public ObservableCollection<GroupModel> Groups { get; }
 
         public ICommand UpdateDirectoryCommand => GetCommand(UpdateDirectoryAsync);
 
         public ICommand SettingsCommand => GetCommand(OpenSettingsAsync);
 
-        public ICommand VisitForumCommand => GetCommand<ForumDetails>(VisitForumAsync);
+        public ICommand VisitForumCommand => GetCommand<ForumModel>(VisitForumAsync);
 
         protected override async Task OnDeserializingAsync(IDictionary<string, object> state)
         {
@@ -44,9 +44,9 @@
             }
         }
 
-        private Task VisitForumAsync(ForumDetails forum)
+        private Task VisitForumAsync(ForumModel forum)
         {
-            this.host.Navigate<ForumViewModel>(forum.Id);
+            this.host.Navigate<ForumPresenter>(forum.Id);
             return Task.FromResult(0);
         }
 

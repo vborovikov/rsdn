@@ -6,30 +6,30 @@
     using System.Threading.Tasks;
     using Relay.PresentationModel;
 
-    public abstract class DataViewModel<TData> : Presenter
-        where TData : IIdentifiable, new()
+    public abstract class ModelPresenter<TModel> : Presenter
+        where TModel : IIdentifiable, new()
     {
-        private TData data;
+        private TModel model;
 
-        protected DataViewModel()
+        protected ModelPresenter()
         {
-            this.data = new TData();
+            this.model = new TModel();
         }
 
-        internal TData Data
+        internal TModel Model
         {
             get
             {
-                return this.data;
+                return this.model;
             }
             set
             {
-                this.data = value;
-                OnDataChanged();
+                this.model = value;
+                OnModelChanged();
             }
         }
 
-        protected virtual void OnDataChanged()
+        protected virtual void OnModelChanged()
         {
             RaisePropertyChanged();
         }

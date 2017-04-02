@@ -19,7 +19,7 @@
         private void HandleForumClick(object sender, RoutedEventArgs e)
         {
             //fixme: somehow binding in that button doesn't work
-            (this.DataContext as ShellViewModel)?.ForumCommand.TryExecute((sender as Button)?.CommandParameter);
+            (this.DataContext as ShellPresenter)?.ForumCommand.TryExecute((sender as Button)?.CommandParameter);
         }
     }
 }

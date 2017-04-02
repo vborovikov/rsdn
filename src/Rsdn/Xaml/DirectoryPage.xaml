@@ -9,77 +9,77 @@
                     xmlns:xi="using:Rsdn.Xaml.Interactivity"
                     DataContext="{Binding Directory,
                                           Source={StaticResource PresenterLocator}}">
-  <Page.Resources>
-    <DataTemplate x:Key="ZoomedInTemplate"
-                  x:DataType="rm:ForumDetails">
-      <StackPanel MinWidth="200"
-                  Margin="12,6,0,6"
-                  xi:ElementCommands.CommandParameter="{Binding}"
-                  xi:ElementCommands.DoubleTap="{Binding Directory.VisitForumCommand,
+ <Page.Resources>
+  <DataTemplate x:Key="ZoomedInTemplate"
+                x:DataType="rm:ForumModel">
+   <StackPanel MinWidth="200"
+               Margin="12,6,0,6"
+               xi:ElementCommands.CommandParameter="{Binding}"
+               xi:ElementCommands.DoubleTap="{Binding Directory.VisitForumCommand,
                                                          Source={StaticResource PresenterLocator}}"
-                  Orientation="Horizontal">
-        <ctrl:ForumLogo Width="60"
-                        Height="60"
-                        ForumId="{x:Bind Id}" />
-        <StackPanel Margin="12,0,0,0">
-          <HyperlinkButton Command="{Binding Directory.VisitForumCommand, Source={StaticResource PresenterLocator}}"
-                           CommandParameter="{Binding}">
-            <StackPanel>
-              <TextBlock Style="{ThemeResource BaseTextBlockStyle}"
-                         Text="{x:Bind Name}" />
-              <TextBlock Width="300"
-                         HorizontalAlignment="Left"
-                         Style="{ThemeResource BodyTextBlockStyle}"
-                         Text="{x:Bind ShortName}"
-                         TextWrapping="Wrap" />
-            </StackPanel>
-          </HyperlinkButton>
-          <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                     Style="{ThemeResource BodyTextBlockStyle}">
+               Orientation="Horizontal">
+    <ctrl:ForumLogo Width="60"
+                    Height="60"
+                    ForumId="{x:Bind Id}" />
+    <StackPanel Margin="12,0,0,0">
+     <HyperlinkButton Command="{Binding Directory.VisitForumCommand, Source={StaticResource PresenterLocator}}"
+                      CommandParameter="{Binding}">
+      <StackPanel>
+       <TextBlock Style="{ThemeResource BaseTextBlockStyle}"
+                  Text="{x:Bind Name}" />
+       <TextBlock Width="300"
+                  HorizontalAlignment="Left"
+                  Style="{ThemeResource BodyTextBlockStyle}"
+                  Text="{x:Bind ShortName}"
+                  TextWrapping="Wrap" />
+      </StackPanel>
+     </HyperlinkButton>
+     <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                Style="{ThemeResource BodyTextBlockStyle}">
             <Run Text="{Binding Posted, TargetNullValue='never'}" />
             <Run Text="&#xb7;" />
             <Run Text="{Binding PostCount, TargetNullValue='No'}" /><Run Text=" threads" />
-          </TextBlock>
-        </StackPanel>
-      </StackPanel>
-    </DataTemplate>
+     </TextBlock>
+    </StackPanel>
+   </StackPanel>
+  </DataTemplate>
 
-    <DataTemplate x:Key="ZoomedInGroupHeaderTemplate"
-                  x:DataType="rm:GroupDetails">
-      <TextBlock Foreground="{ThemeResource ApplicationForegroundThemeBrush}"
-                 Style="{ThemeResource SubtitleTextBlockStyle}"
-                 Text="{x:Bind Name}" />
-    </DataTemplate>
+  <DataTemplate x:Key="ZoomedInGroupHeaderTemplate"
+                x:DataType="rm:GroupModel">
+   <TextBlock Foreground="{ThemeResource ApplicationForegroundThemeBrush}"
+              Style="{ThemeResource SubtitleTextBlockStyle}"
+              Text="{x:Bind Name}" />
+  </DataTemplate>
 
-    <DataTemplate x:Key="ZoomedOutTemplate"
-                  x:DataType="wuxdata:ICollectionViewGroup">
-      <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
-                 Text="{x:Bind Group.(rm:GroupDetails.Name)}"
-                 TextWrapping="Wrap" />
-    </DataTemplate>
+  <DataTemplate x:Key="ZoomedOutTemplate"
+                x:DataType="wuxdata:ICollectionViewGroup">
+   <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+              Text="{x:Bind Group.(rm:GroupModel.Name)}"
+              TextWrapping="Wrap" />
+  </DataTemplate>
 
-    <CollectionViewSource x:Key="Forums"
-                          IsSourceGrouped="True"
-                          ItemsPath="Forums"
-                          Source="{Binding Groups}" />
-  </Page.Resources>
-  <SemanticZoom>
-    <SemanticZoom.ZoomedInView>
-      <GridView ItemTemplate="{StaticResource ZoomedInTemplate}"
-                ItemsSource="{Binding Source={StaticResource Forums}}"
-                ScrollViewer.IsHorizontalScrollChainingEnabled="False"
-                SelectionMode="Single">
-        <GridView.GroupStyle>
-          <GroupStyle HeaderTemplate="{StaticResource ZoomedInGroupHeaderTemplate}" />
-        </GridView.GroupStyle>
-      </GridView>
-    </SemanticZoom.ZoomedInView>
+  <CollectionViewSource x:Key="Forums"
+                        IsSourceGrouped="True"
+                        ItemsPath="Forums"
+                        Source="{Binding Groups}" />
+ </Page.Resources>
+ <SemanticZoom>
+  <SemanticZoom.ZoomedInView>
+   <GridView ItemTemplate="{StaticResource ZoomedInTemplate}"
+             ItemsSource="{Binding Source={StaticResource Forums}}"
+             ScrollViewer.IsHorizontalScrollChainingEnabled="False"
+             SelectionMode="Single">
+    <GridView.GroupStyle>
+     <GroupStyle HeaderTemplate="{StaticResource ZoomedInGroupHeaderTemplate}" />
+    </GridView.GroupStyle>
+   </GridView>
+  </SemanticZoom.ZoomedInView>
 
-    <SemanticZoom.ZoomedOutView>
-      <ListView ItemTemplate="{StaticResource ZoomedOutTemplate}"
-                ItemsSource="{Binding CollectionGroups,
+  <SemanticZoom.ZoomedOutView>
+   <ListView ItemTemplate="{StaticResource ZoomedOutTemplate}"
+             ItemsSource="{Binding CollectionGroups,
                                       Source={StaticResource Forums}}"
-                SelectionMode="None" />
-    </SemanticZoom.ZoomedOutView>
-  </SemanticZoom>
+             SelectionMode="None" />
+  </SemanticZoom.ZoomedOutView>
+ </SemanticZoom>
 </ctrl:NavigablePage>

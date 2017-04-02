@@ -12,40 +12,40 @@
     using Text;
     using IUwpCommand = System.Windows.Input.ICommand;
 
-    public class ThreadViewModel : DataViewModel<ThreadDetails>
+    public class ThreadPresenter : ModelPresenter<ThreadModel>
     {
         private readonly IPresenterHost host;
         private ItemsState postsState;
-        private PostViewModel currentPost;
+        private PostPresenter currentPost;
 
-        public ThreadViewModel(IPresenterHost host)
+        public ThreadPresenter(IPresenterHost host)
         {
             this.host = host;
-            this.Posts = new ObservableCollection<PostViewModel>();
+            this.Posts = new ObservableCollection<PostPresenter>();
         }
 
-        public string Title => this.Data.Title;
+        public string Title => this.Model.Title;
 
-        public string Username => this.Data.Username;
+        public string Username => this.Model.Username;
 
         public string Excerpt { get; private set; }
 
         public PostTopic Topic { get; private set; }
 
-        public string Updated => $"📅{Whitespace.HairSpace}{this.Data.Updated.Humanize(utcDate: true)}";
+        public string Updated => $"📅{Whitespace.HairSpace}{this.Model.Updated.Humanize(utcDate: true)}";
 
         public string PostCount =>
-            $"💬{Whitespace.HairSpace}{this.Data.PostCount}" + (this.Data.NewPostCount > 0 ? $"/{this.Data.NewPostCount}" : String.Empty);
+            $"💬{Whitespace.HairSpace}{this.Model.PostCount}" + (this.Model.NewPostCount > 0 ? $"/{this.Model.NewPostCount}" : String.Empty);
 
-        public string NewPostCount => $"💬{Whitespace.HairSpace}{this.Data.NewPostCount}";
+        public string NewPostCount => $"💬{Whitespace.HairSpace}{this.Model.NewPostCount}";
 
-        public string Ratings => this.Data.ToEmojiVotes();
+        public string Ratings => this.Model.ToEmojiVotes();
 
-        public bool IsNew => this.Data.IsNew;
+        public bool IsNew => this.Model.IsNew;
 
-        public ObservableCollection<PostViewModel> Posts { get; }
+        public ObservableCollection<PostPresenter> Posts { get; }
 
-        public PostViewModel CurrentPost
+        public PostPresenter CurrentPost
         {
             get
             {
@@ -80,37 +80,37 @@
 
         internal Task MarkAsViewedAsync()
         {
-            return this.host.ExecuteCommandAsync(new MarkThreadAsViewedCommand(this.Data.Id));
+            return this.host.ExecuteCommandAsync(new MarkThreadAsViewedCommand(this.Model.Id));
         }
 
         internal async Task LoadPostsAsync()
         {
             this.PostsState = ItemsState.Loading;
-            this.PostsState = await PresenterExtensions.RefreshItemsAsync<PostViewModel, PostDetails>(this.Posts,
-                this.host.RunQueryAsync(new ThreadPostsQuery(this.Data.Id)),
-                m => new PostViewModel(this.host) { Data = m });
+            this.PostsState = await PresenterExtensions.RefreshItemsAsync<PostPresenter, PostModel>(this.Posts,
+                this.host.RunQueryAsync(new ThreadPostsQuery(this.Model.Id)),
+                m => new PostPresenter(this.host) { Model = m });
 
             this.CurrentPost = this.Posts.FirstOrDefault();
         }
 
-        protected override void OnDataChanged()
+        protected override void OnModelChanged()
         {
-            if (String.IsNullOrWhiteSpace(this.Data?.Excerpt))
+            if (String.IsNullOrWhiteSpace(this.Model?.Excerpt))
             {
                 this.Excerpt = String.Empty;
             }
             else
             {
-                var markup = RsdnMarkupReference.Current.Parse(this.Data.Excerpt);
+                var markup = RsdnMarkupReference.Current.Parse(this.Model.Excerpt);
 
-                this.Topic = ThreadOrganizer.DeterminePostTopic(markup, this.Data.Title);
+                this.Topic = ThreadOrganizer.DeterminePostTopic(markup, this.Model.Title);
                 this.Excerpt = String.Join(Environment.NewLine, markup.ToString()
                     .Split(Environment.NewLine.ToArray(), StringSplitOptions.RemoveEmptyEntries)
                     .Where(line => String.IsNullOrWhiteSpace(line) == false)
                     .Take(2));
             }
 
-            base.OnDataChanged();
+            base.OnModelChanged();
         }
 
         private Task UpdateAsync()

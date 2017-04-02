@@ -118,9 +118,9 @@ namespace Rsdn.Client
 
         private static readonly Regex replyTitleTemplate = new Regex(@"^Re(?:\[(?<level>\d+)\])?:\s(?<subj>.*)");
 
-        public static IList<PostDetails> Organize(IEnumerable<PostDetails> posts, ThreadDetails thread)
+        public static IList<PostModel> Organize(IEnumerable<PostModel> posts, ThreadModel thread)
         {
-            var threadPosts = new LinkedList<PostDetails>();
+            var threadPosts = new LinkedList<PostModel>();
 
             // We assume that posts are already sorted by the posting time
             foreach (var post in posts)
@@ -135,7 +135,7 @@ namespace Rsdn.Client
                 }
                 else
                 {
-                    LinkedListNode<PostDetails> subthreadNode = null;
+                    LinkedListNode<PostModel> subthreadNode = null;
 
                     // We search for the subthread start from the last reply because most likely it is there.
                     for (var node = threadPosts.Last; node != null; node = node.Previous)
@@ -152,7 +152,7 @@ namespace Rsdn.Client
 
                         // Find the next node with the same level as the subthread start level and place the post before it.
 
-                        LinkedListNode<PostDetails> nextSubthreadNode = null;
+                        LinkedListNode<PostModel> nextSubthreadNode = null;
                         for (var node = subthreadNode.Next; node != null; node = node.Next)
                         {
                             if (node.Value.Level <= subthreadNode.Value.Level)
@@ -208,7 +208,7 @@ namespace Rsdn.Client
             return threadPosts.ToArray();
         }
 
-        public static string GetReplyMessage(PostDetails post)
+        public static string GetReplyMessage(PostModel post)
         {
             var reply = new StringBuilder();
 
@@ -246,7 +246,7 @@ namespace Rsdn.Client
             return reply.ToString();
         }
 
-        public static IEnumerable<ThreadDetails> Organize(IEnumerable<ThreadDetails> threads, ForumDetails forum)
+        public static IEnumerable<ThreadModel> Organize(IEnumerable<ThreadModel> threads, ForumModel forum)
         {
             foreach (var thread in threads)
             {
@@ -348,12 +348,12 @@ namespace Rsdn.Client
             return shortName.Length > 0 ? shortName : username.Substring(0, 1).ToUpper();
         }
 
-        private static void SetThreadFreshness(ForumDetails forum, ThreadDetails thread)
+        private static void SetThreadFreshness(ForumModel forum, ThreadModel thread)
         {
             thread.IsNew = thread.Updated > (forum.Visited ?? DateTime.MinValue);
         }
 
-        private static void SetPostFreshness(ThreadDetails thread, PostDetails post)
+        private static void SetPostFreshness(ThreadModel thread, PostModel post)
         {
             post.IsNew = (post.Updated ?? post.Posted) > (thread.Viewed ?? DateTime.MinValue);
         }

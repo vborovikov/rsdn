@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
     using Relay.PresentationModel;
 
-    public abstract class DialogViewModel : Presenter, IDialogContext
+    public abstract class DialogPresenter : Presenter, IDialogContext
     {
         private EventHandler closeRequested;
 

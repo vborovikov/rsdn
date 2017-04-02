@@ -25,7 +25,7 @@
             var mapperConfig = new MapperConfiguration(config =>
             {
                 config
-                    .CreateMap<DbThread, ThreadDetails>();
+                    .CreateMap<DbThread, ThreadModel>();
             });
             mapper = mapperConfig.CreateMapper();
         }
@@ -35,20 +35,20 @@
             this.databaseFactory = databaseFactory;
         }
 
-        public ThreadDetails GetThread(int threadId)
+        public ThreadModel GetThread(int threadId)
         {
             using (var db = this.databaseFactory.GetDatabase())
             {
                 var thread = db.Get<DbThread>(threadId);
-                return mapper.Map<ThreadDetails>(thread);
+                return mapper.Map<ThreadModel>(thread);
             }
         }
 
-        public IEnumerable<PostDetails> GetThreadPosts(int threadId)
+        public IEnumerable<PostModel> GetThreadPosts(int threadId)
         {
             using (var db = this.databaseFactory.GetDatabase())
             {
-                var threadPosts = db.Query<PostDetails>(
+                var threadPosts = db.Query<PostModel>(
                     "select Post.*, Ratings.* " +
                     "from Post " +
                     RatingsJoin +

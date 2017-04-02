@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
     using Relay.RequestModel;
 
-    public class RecentForumsQuery : QueryBase<IEnumerable<ForumDetails>>
+    public class RecentForumsQuery : QueryBase<IEnumerable<ForumModel>>
     {
     }
 }

@@ -10,7 +10,7 @@
     using IUwpCommand = System.Windows.Input.ICommand;
 
     [Dialog("Rsdn.Xaml.SigninDialog, Rsdn")]
-    public class SigninViewModel : DialogViewModel, IEventHandler<CredentialVerificationEvent>
+    public class SigninPresenter : DialogPresenter, IEventHandler<CredentialVerificationEvent>
     {
         private readonly IRequestDispatcher requestDispatcher;
         private CancellationTokenSource busySource;
@@ -18,7 +18,7 @@
         private string username;
         private string password;
 
-        public SigninViewModel(IRequestDispatcher requestDispatcher)
+        public SigninPresenter(IRequestDispatcher requestDispatcher)
         {
             this.requestDispatcher = requestDispatcher;
         }

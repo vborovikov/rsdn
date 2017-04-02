@@ -28,16 +28,16 @@
             this.serviceProvider = serviceProvider;
         }
 
-        public ShellViewModel Shell => this.serviceProvider.Get<ShellViewModel>();
+        public ShellPresenter Shell => this.serviceProvider.Get<ShellPresenter>();
 
-        public DirectoryViewModel Directory => this.serviceProvider.Get<DirectoryViewModel>();
+        public DirectoryPresenter Directory => this.serviceProvider.Get<DirectoryPresenter>();
 
-        public SigninViewModel Signin => this.serviceProvider.Get<SigninViewModel>();
+        public SigninPresenter Signin => this.serviceProvider.Get<SigninPresenter>();
 
-        public ForumViewModel Forum => this.serviceProvider.Get<ForumViewModel>();
+        public ForumPresenter Forum => this.serviceProvider.Get<ForumPresenter>();
 
-        public PostsViewModel Posts => this.serviceProvider.Get<PostsViewModel>();
+        public PostsPresenter Posts => this.serviceProvider.Get<PostsPresenter>();
 
-        public VotesViewModel Votes => this.serviceProvider.Get<VotesViewModel>();
+        public VotesPresenter Votes => this.serviceProvider.Get<VotesPresenter>();
     }
 }

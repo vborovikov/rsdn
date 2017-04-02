@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using Relay.RequestModel;
 
-    public class PostsQuery : QueryBase<IEnumerable<ThreadDetails>>
+    public class PostsQuery : QueryBase<IEnumerable<ThreadModel>>
     {
     }
 }

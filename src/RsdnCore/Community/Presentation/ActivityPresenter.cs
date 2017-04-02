@@ -9,23 +9,23 @@
     using NavigationModel;
     using Relay.RequestModel;
 
-    public abstract class ActivityViewModel : NavigablePresenter
+    public abstract class ActivityPresenter : NavigablePresenter
     {
         protected readonly IPresenterHost host;
         private ItemsState threadsState;
-        private ThreadViewModel currentThread;
+        private ThreadPresenter currentThread;
 
-        protected ActivityViewModel(IPresenterHost host)
+        protected ActivityPresenter(IPresenterHost host)
         {
             this.host = host;
-            this.Threads = new ObservableCollection<ThreadViewModel>();
+            this.Threads = new ObservableCollection<ThreadPresenter>();
         }
 
         public abstract string Name { get; }
 
-        public ObservableCollection<ThreadViewModel> Threads { get; }
+        public ObservableCollection<ThreadPresenter> Threads { get; }
 
-        public ThreadViewModel CurrentThread
+        public ThreadPresenter CurrentThread
         {
             get
             {
@@ -62,7 +62,7 @@
             this.ThreadsState = await PresenterExtensions.RefreshItemsAsync(
                 this.Threads,
                 this.host.RunQueryAsync(GetThreadsQuery()),
-                m => new ThreadViewModel(this.host) { Data = m });
+                m => new ThreadPresenter(this.host) { Model = m });
 
             this.CurrentThread = this.Threads.FirstOrDefault(thread => thread.IsNew) ?? this.Threads.FirstOrDefault();
         }
@@ -75,9 +75,9 @@
             await base.OnNavigatedFromAsync(parameter);
         }
 
-        protected abstract IQuery<IEnumerable<ThreadDetails>> GetThreadsQuery();
+        protected abstract IQuery<IEnumerable<ThreadModel>> GetThreadsQuery();
 
-        private async Task PrepareThreadAsync(ThreadViewModel newThread)
+        private async Task PrepareThreadAsync(ThreadPresenter newThread)
         {
             if (this.currentThread != null)
                 await this.currentThread.MarkAsViewedAsync();

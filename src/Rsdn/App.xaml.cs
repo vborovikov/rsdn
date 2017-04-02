@@ -105,7 +105,7 @@
             var shell = Window.Current.Content as Shell;
             if (shell != null)
             {
-                var shellPresenter = shell.DataContext as ShellViewModel;
+                var shellPresenter = shell.DataContext as ShellPresenter;
                 await (shellPresenter as ITombstone)?.OnDeserializingAsync(SuspensionManager.SessionState);
             }
         }
@@ -118,7 +118,7 @@
                 var shell = Window.Current.Content as Shell;
                 if (shell != null)
                 {
-                    var shellPresenter = shell.DataContext as ShellViewModel;
+                    var shellPresenter = shell.DataContext as ShellPresenter;
                     await (shellPresenter as ITombstone)?.OnSerializingAsync(SuspensionManager.SessionState);
                 }
 

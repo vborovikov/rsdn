@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class GroupDetails : IIdentifiable
+    public class GroupModel : IIdentifiable
     {
         public int Id { get; set; }
 
@@ -13,6 +13,6 @@
 
         public int SortOrder { get; set; }
 
-        public IEnumerable<ForumDetails> Forums { get; set; }
+        public IEnumerable<ForumModel> Forums { get; set; }
     }
 }

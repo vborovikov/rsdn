@@ -8,17 +8,17 @@
 
     public interface IForumGateway : IGateway
     {
-        IEnumerable<GroupDetails> GetGroups();
+        IEnumerable<GroupModel> GetGroups();
 
         IEnumerable<ForumStatus> GetForumsStatus();
 
-        IEnumerable<ForumDetails> GetForums();
+        IEnumerable<ForumModel> GetForums();
 
-        IEnumerable<ForumDetails> GetFavoriteForums();
+        IEnumerable<ForumModel> GetFavoriteForums();
 
-        IEnumerable<ForumDetails> GetRecentForums();
+        IEnumerable<ForumModel> GetRecentForums();
 
-        IEnumerable<ThreadDetails> GetThreads(int forumId);
+        IEnumerable<ThreadModel> GetThreads(int forumId);
 
         void MarkForumAsVisited(int forumId);
 
@@ -26,6 +26,6 @@
 
         void RemoveForumFromFavorites(int forumId);
 
-        ForumDetails GetForum(int forumId);
+        ForumModel GetForum(int forumId);
     }
 }

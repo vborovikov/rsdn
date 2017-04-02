@@ -5,9 +5,9 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class ForumDetails : IIdentifiable
+    public class ForumModel : IIdentifiable
     {
-        public static readonly ForumDetails Empty = new ForumDetails
+        public static readonly ForumModel Empty = new ForumModel
         {
             Id = -1,
             Name = String.Empty,

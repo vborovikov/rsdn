@@ -54,7 +54,7 @@
     <ProgressBar xi:ProgressBar.BusyState="{Binding IsBusy}" />
    </ListView.Header>
    <ListView.ItemTemplate>
-    <DataTemplate x:DataType="pm:ThreadViewModel">
+    <DataTemplate x:DataType="pm:ThreadPresenter">
      <xc:ThreadSummary Margin="0,0,0,12" />
     </DataTemplate>
    </ListView.ItemTemplate>

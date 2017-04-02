@@ -137,7 +137,7 @@
 
             var registrations = (from presenterType in presentationAssembly.GetExportedTypes()
                                  let isPagePresenter = presenterType.GetTypeInfo().IsSubclassOf(typeof(NavigablePresenter))
-                                 let isDialogPresenter = presenterType.GetTypeInfo().IsSubclassOf(typeof(DialogViewModel))
+                                 let isDialogPresenter = presenterType.GetTypeInfo().IsSubclassOf(typeof(DialogPresenter))
                                  where presenterType.GetTypeInfo().IsAbstract == false && (isPagePresenter || isDialogPresenter)
                                  select new
                                  {

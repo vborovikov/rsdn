@@ -10,15 +10,15 @@
     using Relay.RequestModel;
 
     [Navigable("Rsdn.Xaml.ActivityPage, Rsdn")]
-    public class PostsViewModel : ActivityViewModel
+    public class PostsPresenter : ActivityPresenter
     {
-        public PostsViewModel(IPresenterHost host) : base(host)
+        public PostsPresenter(IPresenterHost host) : base(host)
         {
         }
 
         public override string Name => "Posts";
 
-        protected override IQuery<IEnumerable<ThreadDetails>> GetThreadsQuery()
+        protected override IQuery<IEnumerable<ThreadModel>> GetThreadsQuery()
         {
             return new PostsQuery();
         }

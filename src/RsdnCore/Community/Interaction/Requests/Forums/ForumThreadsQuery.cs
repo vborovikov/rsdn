@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
     using Relay.RequestModel;
 
-    public class ForumThreadsQuery : QueryBase<IEnumerable<ThreadDetails>>
+    public class ForumThreadsQuery : QueryBase<IEnumerable<ThreadModel>>
     {
         public ForumThreadsQuery(int forumId)
         {

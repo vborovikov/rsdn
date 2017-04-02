@@ -10,7 +10,7 @@
     using Interaction;
     using Interaction.Requests.Posts;
 
-    public class PostViewModel : DataViewModel<PostDetails>
+    public class PostPresenter : ModelPresenter<PostModel>
     {
         private readonly IPresenterHost host;
 
@@ -18,25 +18,25 @@
         private string replyTitle;
         private string replyMessage;
 
-        public PostViewModel(IPresenterHost host)
+        public PostPresenter(IPresenterHost host)
         {
             this.host = host;
             this.replyMode = ReplyMode.Inactive;
         }
 
-        public string Title => this.Data.Title;
+        public string Title => this.Model.Title;
 
-        public string Message => this.Data.Message;
+        public string Message => this.Model.Message;
 
-        public string Username => this.Data.Username;
+        public string Username => this.Model.Username;
 
-        public string Posted => this.Data.Posted.Humanize(utcDate: true);
+        public string Posted => this.Model.Posted.Humanize(utcDate: true);
 
-        public string Ratings => this.Data.ToEmojiVotes(expanded: true);
+        public string Ratings => this.Model.ToEmojiVotes(expanded: true);
 
-        public int Level => this.Data.Level;
+        public int Level => this.Model.Level;
 
-        public bool IsNew => this.Data.IsNew;
+        public bool IsNew => this.Model.IsNew;
 
         public ReplyMode ReplyMode
         {
@@ -104,7 +104,7 @@
         {
             using (Busy())
             {
-                var replyPostCommand = new NewReplyCommand(this.Data.Id, this.ReplyTitle, this.ReplyMessage);
+                var replyPostCommand = new NewReplyCommand(this.Model.Id, this.ReplyTitle, this.ReplyMessage);
                 ClearReply();
                 await this.host.ExecuteCommandAsync(replyPostCommand);
             }
@@ -117,15 +117,15 @@
 
         private Task CancelReply()
         {
-            return ClearReply();
+            ClearReply();
+            return Task.CompletedTask;
         }
 
-        private Task ClearReply()
+        private void ClearReply()
         {
             this.ReplyMode = ReplyMode.Inactive;
             this.ReplyTitle = null;
             this.ReplyMessage = null;
-            return Task.CompletedTask;
         }
 
         private bool CanReply()
@@ -136,8 +136,8 @@
         private Task Reply()
         {
             this.ReplyMode = ReplyMode.Active;
-            this.ReplyTitle = ThreadOrganizer.GetReplyTitle(this.Data.Title);
-            this.ReplyMessage = ThreadOrganizer.GetReplyMessage(this.Data);
+            this.ReplyTitle = ThreadOrganizer.GetReplyTitle(this.Model.Title);
+            this.ReplyMessage = ThreadOrganizer.GetReplyMessage(this.Model);
             return Task.CompletedTask;
         }
 
@@ -151,7 +151,7 @@
         {
             using (Busy())
             {
-                await this.host.ExecuteCommandAsync(new VotePostCommand(this.Data.Id,
+                await this.host.ExecuteCommandAsync(new VotePostCommand(this.Model.Id,
                     (VoteValue)Enum.Parse(typeof(VoteValue), str)));
             }
         }

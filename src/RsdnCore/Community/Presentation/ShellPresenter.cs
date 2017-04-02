@@ -13,13 +13,13 @@
     using Relay.RequestModel;
     using IUwpCommand = System.Windows.Input.ICommand;
 
-    public class ShellViewModel : NavigablePresenterHost,
+    public class ShellPresenter : NavigablePresenterHost,
         IAsyncEventHandler<FavoritesChangedEvent>,
         IAsyncEventHandler<ForumVisitedEvent>
     {
         private ObservableCollection<ForumHub> forumHubs;
 
-        public ShellViewModel(INavigationService navigationService, IRequestDispatcher requestDispatcher, IDialogManager dialogManager)
+        public ShellPresenter(INavigationService navigationService, IRequestDispatcher requestDispatcher, IDialogManager dialogManager)
             : base(navigationService, requestDispatcher, dialogManager)
         {
             this.forumHubs = new ObservableCollection<ForumHub>();
@@ -27,7 +27,7 @@
 
         public ObservableCollection<ForumHub> ForumHubs => this.forumHubs;
 
-        public IUwpCommand ForumCommand => GetCommand<ForumDetails>(OpenForum);
+        public IUwpCommand ForumCommand => GetCommand<ForumModel>(OpenForum);
 
         public IUwpCommand VotesCommand => GetCommand(OpenVotes);
 
@@ -75,7 +75,7 @@
                 await ShowMessage(verifyResult.ToString());
                 credential.Password = String.Empty;
                 var canSignin = await ShowDialog(
-                    typeof(SigninViewModel).GetTypeInfo().GetCustomAttribute<DialogAttribute>().DialogType,
+                    typeof(SigninPresenter).GetTypeInfo().GetCustomAttribute<DialogAttribute>().DialogType,
                     credential);
                 if (canSignin ?? false)
                     await ExecuteCommandAsync(new SigninCommand(credential));
@@ -87,27 +87,27 @@
             return verifyResult;
         }
 
-        private Task OpenForum(ForumDetails forum)
+        private Task OpenForum(ForumModel forum)
         {
-            this.navigationService.Navigate(typeof(ForumViewModel), parameter: forum.Id);
+            this.navigationService.Navigate(typeof(ForumPresenter), parameter: forum.Id);
             return Task.CompletedTask;
         }
 
         private Task OpenVotes()
         {
-            this.navigationService.Navigate(typeof(VotesViewModel));
+            this.navigationService.Navigate(typeof(VotesPresenter));
             return Task.CompletedTask;
         }
 
         private Task OpenPosts()
         {
-            this.navigationService.Navigate(typeof(PostsViewModel));
+            this.navigationService.Navigate(typeof(PostsPresenter));
             return Task.CompletedTask;
         }
 
         private Task OpenDirectory()
         {
-            this.navigationService.Navigate(typeof(DirectoryViewModel));
+            this.navigationService.Navigate(typeof(DirectoryPresenter));
             while (this.navigationService.CanGoBack)
             {
                 this.navigationService.RemoveBackEntry();

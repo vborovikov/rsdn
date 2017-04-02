@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
     using Relay.RequestModel;
 
-    public class VotesQuery : QueryBase<IEnumerable<ThreadDetails>>
+    public class VotesQuery : QueryBase<IEnumerable<ThreadModel>>
     {
     }
 }

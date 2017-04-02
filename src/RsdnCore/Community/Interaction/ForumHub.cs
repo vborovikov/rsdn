@@ -7,7 +7,7 @@
 
     public class ForumHub
     {
-        public ForumHub(string name, IEnumerable<ForumDetails> forums)
+        public ForumHub(string name, IEnumerable<ForumModel> forums)
         {
             this.Name = name;
             this.Forums = forums;
@@ -17,6 +17,6 @@
 
         public object Tag { get; set; }
 
-        public IEnumerable<ForumDetails> Forums { get; }
+        public IEnumerable<ForumModel> Forums { get; }
     }
 }

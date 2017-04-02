@@ -26,10 +26,10 @@
             var mapperConfig = new MapperConfiguration(config =>
             {
                 config
-                    .CreateMap<DbForum, ForumDetails>();
+                    .CreateMap<DbForum, ForumModel>();
 
                 config
-                    .CreateMap<DbPost, ThreadDetails>();
+                    .CreateMap<DbPost, ThreadModel>();
             });
             mapper = mapperConfig.CreateMapper();
         }
@@ -39,15 +39,15 @@
             this.databaseFactory = databaseFactory;
         }
 
-        public IEnumerable<ForumDetails> GetForums()
+        public IEnumerable<ForumModel> GetForums()
         {
             using (var db = this.databaseFactory.GetDatabase())
             {
-                return mapper.Map<IEnumerable<ForumDetails>>(db.Table<DbForum>());
+                return mapper.Map<IEnumerable<ForumModel>>(db.Table<DbForum>());
             }
         }
 
-        public IEnumerable<ForumDetails> GetFavoriteForums()
+        public IEnumerable<ForumModel> GetFavoriteForums()
         {
             using (var db = this.databaseFactory.GetDatabase())
             {
@@ -57,11 +57,11 @@
                              select forum;
                 forums = forums.Take(MaxSidebarForumCount);
 
-                return mapper.Map<IEnumerable<ForumDetails>>(forums.ToArray());
+                return mapper.Map<IEnumerable<ForumModel>>(forums.ToArray());
             }
         }
 
-        public IEnumerable<ForumDetails> GetRecentForums()
+        public IEnumerable<ForumModel> GetRecentForums()
         {
             using (var db = this.databaseFactory.GetDatabase())
             {
@@ -71,7 +71,7 @@
                              select forum;
                 forums = forums.Take(MaxSidebarForumCount);
 
-                return mapper.Map<IEnumerable<ForumDetails>>(forums.ToArray());
+                return mapper.Map<IEnumerable<ForumModel>>(forums.ToArray());
             }
         }
 
@@ -88,11 +88,11 @@
             }
         }
 
-        public IEnumerable<ThreadDetails> GetThreads(int forumId)
+        public IEnumerable<ThreadModel> GetThreads(int forumId)
         {
             using (var db = this.databaseFactory.GetDatabase())
             {
-                var details = db.Query<ThreadDetails>(
+                var details = db.Query<ThreadModel>(
                     "select Post.Id, Post.Title, Post.Message as Excerpt, Post.Username, " +
                     "ifnull(Post.Updated, Post.Posted) as Updated, Thread.Viewed, " +
                     "Thread.PostCount, Thread.NewPostCount, Ratings.* " +
@@ -128,7 +128,7 @@
             ChangeFavorite(forumId, false);
         }
 
-        public IEnumerable<GroupDetails> GetGroups()
+        public IEnumerable<GroupModel> GetGroups()
         {
             using (var db = this.databaseFactory.GetDatabase())
             {
@@ -138,12 +138,12 @@
                 var forumsInGroups = from g in groups
                                      join f in forums on g.Id equals f.GroupId into groupForums
                                      orderby g.SortOrder
-                                     select new GroupDetails
+                                     select new GroupModel
                                      {
                                          Id = g.Id,
                                          Name = g.Name,
                                          SortOrder = g.SortOrder,
-                                         Forums = mapper.Map<IEnumerable<DbForum>, IEnumerable<ForumDetails>>(
+                                         Forums = mapper.Map<IEnumerable<DbForum>, IEnumerable<ForumModel>>(
                                              from gf in groupForums
                                              orderby gf.Name
                                              select gf)
@@ -153,12 +153,12 @@
             }
         }
 
-        public ForumDetails GetForum(int forumId)
+        public ForumModel GetForum(int forumId)
         {
             using (var db = this.databaseFactory.GetDatabase())
             {
                 var forum = db.Get<DbForum>(forumId);
-                return mapper.Map<ForumDetails>(forum);
+                return mapper.Map<ForumModel>(forum);
             }
         }
 

@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
     using Relay.RequestModel;
 
-    public class GroupsQuery : QueryBase<IEnumerable<GroupDetails>>
+    public class GroupsQuery : QueryBase<IEnumerable<GroupModel>>
     {
     }
 }

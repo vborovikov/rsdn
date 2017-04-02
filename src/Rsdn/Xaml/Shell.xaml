@@ -36,7 +36,7 @@
   </Style>
 
   <DataTemplate x:Key="ForumTemplate"
-                x:DataType="rsdn:ForumDetails">
+                x:DataType="rsdn:ForumModel">
    <Button Command="{Binding Shell.ForumCommand, Source={StaticResource PresenterLocator}}"
            CommandParameter="{Binding}"
            Style="{ThemeResource TextBlockButtonStyle}"

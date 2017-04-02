@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class PostDetails : IIdentifiable, IVotes
+    public class PostModel : IIdentifiable, IVotes
     {
         public int Id { get; private set; }
 

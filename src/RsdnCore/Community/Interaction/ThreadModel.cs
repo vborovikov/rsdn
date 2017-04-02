@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class ThreadDetails : IIdentifiable, IVotes
+    public class ThreadModel : IIdentifiable, IVotes
     {
         public int Id { get; private set; }
 
