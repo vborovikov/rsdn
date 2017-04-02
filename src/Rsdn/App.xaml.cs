@@ -122,6 +122,7 @@
                     await (shellPresenter as ITombstone)?.OnSerializingAsync(SuspensionManager.SessionState);
                 }
 
+                //todo: make sure it did the job before the deadline
                 await SuspensionManager.SaveAsync();
             }
             finally
