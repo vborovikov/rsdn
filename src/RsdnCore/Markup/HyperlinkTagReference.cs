@@ -74,7 +74,7 @@
             Uri uri = null;
             if (Uri.TryCreate(uriString, UriKind.RelativeOrAbsolute, out uri))
             {
-                return uri.IsAbsoluteUri && uri.Host.Contains("rsdn.ru");
+                return uri.IsAbsoluteUri && uri.Host.Contains("rsdn.");
             }
 
             return false;
