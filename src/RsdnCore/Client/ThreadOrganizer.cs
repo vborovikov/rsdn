@@ -280,7 +280,7 @@ namespace Rsdn.Client
                         return PostTopic.News;
                 }
 
-                if (uriHost.StartsWith("rsdn.ru", StringComparison.OrdinalIgnoreCase) == false)
+                if (uriHost.StartsWith("rsdn.", StringComparison.OrdinalIgnoreCase) == false)
                     return PostTopic.Website;
             }
 

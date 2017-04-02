@@ -58,8 +58,8 @@
         {
             if (String.IsNullOrWhiteSpace(uriString) == false)
             {
-                if (uriString.StartsWith("rsdn.ru", StringComparison.OrdinalIgnoreCase) ||
-                    uriString.StartsWith("www.rsdn.ru", StringComparison.OrdinalIgnoreCase) ||
+                if (uriString.StartsWith("rsdn.", StringComparison.OrdinalIgnoreCase) ||
+                    uriString.StartsWith("www.rsdn.", StringComparison.OrdinalIgnoreCase) ||
                     UriHasRsdnHost(uriString))
                 {
                     return InlineType.Command;
