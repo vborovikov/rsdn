@@ -1,23 +1,83 @@
-﻿<ctrl:NavigablePage x:Class="Rsdn.Xaml.ForumPage"
-                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ai="using:Microsoft.Xaml.Interactions.Core"
-                    xmlns:ctrl="using:Rsdn.Xaml"
-                    xmlns:i="using:Microsoft.Xaml.Interactivity"
-                    xmlns:p="using:Rsdn.Xaml.Views"
-                    xmlns:pm="using:Rsdn.Community.Presentation"
-                    xmlns:xi="using:Rsdn.Xaml.Interactivity"
-                    DataContext="{Binding Forum,
-                                          Source={StaticResource PresenterLocator}}">
- <Grid>
-  <Grid.ColumnDefinitions>
-   <ColumnDefinition Width="0.4*" />
-   <ColumnDefinition Width="0.6*" />
-  </Grid.ColumnDefinitions>
-
-  <p:ForumView DataContext="{Binding}" />
-
-  <p:ThreadView Grid.Column="1"
-                DataContext="{Binding CurrentThread}" />
- </Grid>
-</ctrl:NavigablePage>
+﻿<xa:NavigablePage x:Class="Rsdn.Xaml.ForumPage"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:ai="using:Microsoft.Xaml.Interactions.Core"
+                  xmlns:xa="using:Rsdn.Xaml"
+                  xmlns:i="using:Microsoft.Xaml.Interactivity"
+                  xmlns:p="using:Rsdn.Xaml.Views"
+                  xmlns:pm="using:Rsdn.Community.Presentation"
+                  xmlns:xi="using:Rsdn.Xaml.Interactivity"
+                  xmlns:ctrl="using:Rsdn.Xaml.Controls"
+                  xmlns:tkctrl="using:Microsoft.Toolkit.Uwp.UI.Controls"
+                  DataContext="{Binding Forum, Source={StaticResource PresenterLocator}}">
+ <ctrl:PullToRefreshMasterDetailsView ItemsSource="{Binding Threads}"
+                                      RefreshCommand="{Binding UpdateCommand}">
+  <tkctrl:MasterDetailsView.MasterCommandBar>
+   <CommandBar>
+    <CommandBar.Content>
+     <StackPanel Orientation="Horizontal"
+                 Padding="12">
+      <xa:ForumLogo Margin="12,0"
+                    ForumId="{Binding Id}" />
+      <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+                 Text="{Binding Name}" />
+     </StackPanel>
+    </CommandBar.Content>
+    <AppBarButton Command="{Binding UpdateCommand}"
+                  Icon="Sync" />
+    <AppBarButton Name="FavoriteButton"
+                  Command="{Binding ToggleFavoriteCommand}"
+                  Icon="Favorite">
+     <i:Interaction.Behaviors>
+      <ai:DataTriggerBehavior Binding="{Binding IsFavorite}"
+                              Value="True">
+       <ai:ChangePropertyAction PropertyName="Icon"
+                                TargetObject="{Binding ElementName=FavoriteButton}"
+                                Value="Unfavorite" />
+      </ai:DataTriggerBehavior>
+      <ai:DataTriggerBehavior Binding="{Binding IsFavorite}"
+                              Value="False">
+       <ai:ChangePropertyAction PropertyName="Icon"
+                                TargetObject="{Binding ElementName=FavoriteButton}"
+                                Value="Favorite" />
+      </ai:DataTriggerBehavior>
+     </i:Interaction.Behaviors>
+    </AppBarButton>
+   </CommandBar>
+  </tkctrl:MasterDetailsView.MasterCommandBar>
+  <tkctrl:MasterDetailsView.ItemTemplate>
+   <DataTemplate x:DataType="pm:ThreadPresenter">
+    <p:ThreadSummary />
+   </DataTemplate>
+  </tkctrl:MasterDetailsView.ItemTemplate>
+  <tkctrl:MasterDetailsView.DetailsTemplate>
+   <DataTemplate x:DataType="pm:ThreadPresenter">
+    <tkctrl:PullToRefreshListView ItemsSource="{Binding Posts}"
+                                  SelectedItem="{Binding CurrentPost, Mode=TwoWay}"
+                                  SelectionMode="None"
+                                  Name="PostsListView"
+                                  RefreshCommand="{Binding UpdateCommand}">
+     <ListView.Header>
+      <tkctrl:ScrollHeader Mode="QuickReturn"
+                           TargetListViewBase="{Binding ElementName=PostsListView}">
+       <TextBlock Text="{Binding Title}"
+                  Margin="12"
+                  Style="{ThemeResource SubtitleTextBlockStyle}" />
+      </tkctrl:ScrollHeader>
+     </ListView.Header>
+     <ListView.ItemTemplate>
+      <DataTemplate x:DataType="pm:PostPresenter">
+       <p:PostControl />
+      </DataTemplate>
+     </ListView.ItemTemplate>
+     <ListView.ItemContainerStyle>
+      <Style TargetType="ListViewItem">
+       <Setter Property="HorizontalContentAlignment"
+               Value="Stretch" />
+      </Style>
+     </ListView.ItemContainerStyle>
+    </tkctrl:PullToRefreshListView>
+   </DataTemplate>
+  </tkctrl:MasterDetailsView.DetailsTemplate>
+ </ctrl:PullToRefreshMasterDetailsView>
+</xa:NavigablePage>

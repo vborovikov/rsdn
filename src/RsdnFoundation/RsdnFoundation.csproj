@@ -149,6 +149,7 @@
     </Compile>
     <Compile Include="Client\Data\Fetch\JanusATSoapClient.cs" />
     <Compile Include="Xaml\Controls\GlyphMenuFlyoutItem.cs" />
+    <Compile Include="Xaml\Controls\PullToRefreshMasterDetailsView.cs" />
     <Compile Include="Xaml\Interactivity\BooleanForeground.cs" />
     <Compile Include="Xaml\Interactivity\CommandExtensions.cs" />
     <Compile Include="Xaml\Interactivity\CurrentChangedTrigger.cs" />
