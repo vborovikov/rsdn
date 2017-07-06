@@ -163,7 +163,6 @@
     <Compile Include="Xaml\NavigablePage.cs" />
     <Compile Include="Xaml\NestingLevelMarker.cs" />
     <Compile Include="Xaml\Rendering\SectionStyle.cs" />
-    <Compile Include="Xaml\SwipePanel.cs" />
     <Compile Include="Client\Data\Fetch\Fetcher.cs" />
     <Compile Include="Client\Data\Fetch\ServiceWrapper.cs" />
     <Compile Include="Client\Data\ForumGateway.cs" />
