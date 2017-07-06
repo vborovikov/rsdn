@@ -114,6 +114,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\AppRequestDispatcher.cs" />
     <Compile Include="Configuration\EventDispatcher.cs" />
     <Compile Include="Configuration\ObjectGraph.cs" />
     <Compile Include="Xaml\ActivityPage.xaml.cs">
