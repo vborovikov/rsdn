@@ -17,6 +17,7 @@
  </Page.Resources>
 
  <ctrl:PullToRefreshMasterDetailsView ItemsSource="{Binding Threads}"
+                                      SelectedItem="{Binding CurrentThread, Mode=TwoWay}"
                                       MasterHeader="{Binding}"
                                       RefreshCommand="{Binding UpdateCommand}"
                                       BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
@@ -25,7 +26,7 @@
     <StackPanel Orientation="Horizontal"
                 Padding="12"
                 Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
-     <xa:ForumLogo Margin="0,0,12,0"
+     <xa:ForumLogo Margin="2,0,14,0"
                    ForumId="{Binding Id}" />
      <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
                 Text="{Binding Name}" />
@@ -61,6 +62,12 @@
     <p:ThreadSummary />
    </DataTemplate>
   </tkctrl:MasterDetailsView.ItemTemplate>
+  <tkctrl:MasterDetailsView.ItemContainerStyle>
+   <Style TargetType="ListViewItem">
+    <Setter Property="HorizontalContentAlignment"
+            Value="Stretch" />
+   </Style>
+  </tkctrl:MasterDetailsView.ItemContainerStyle>
   <tkctrl:MasterDetailsView.DetailsTemplate>
    <DataTemplate x:DataType="pm:ThreadPresenter">
     <tkctrl:PullToRefreshListView ItemsSource="{Binding Posts}"
@@ -74,7 +81,7 @@
        <StackPanel Orientation="Horizontal"
                    Padding="12"
                    Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
-        <fa:FontAwesome Width="24"
+        <fa:FontAwesome Width="28"
                         Height="24"
                         Margin="0,0,12,0"
                         HorizontalAlignment="Left"

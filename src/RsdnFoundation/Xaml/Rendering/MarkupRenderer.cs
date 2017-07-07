@@ -5,6 +5,7 @@
     using System.Linq;
     using Markup;
     using Markup.Rendering;
+    using Microsoft.Toolkit.Uwp.UI.Controls;
     using Text;
     using Windows.Storage.Streams;
     using Windows.UI.Text;
@@ -348,7 +349,7 @@
             {
                 return new InlineUIContainer
                 {
-                    Child = new Image
+                    Child = new ImageEx
                     {
                         Source = source,
                         Stretch = Stretch.None,
