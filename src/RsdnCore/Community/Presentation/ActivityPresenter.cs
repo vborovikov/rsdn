@@ -79,10 +79,10 @@
 
         private async Task PrepareThreadAsync(ThreadPresenter newThread)
         {
-            if (this.currentThread != null)
-                await this.currentThread.MarkAsViewedAsync();
             if (newThread != null)
                 await newThread.LoadPostsAsync();
+            if (this.currentThread != null)
+                await this.currentThread.MarkAsViewedAsync();
         }
     }
 }

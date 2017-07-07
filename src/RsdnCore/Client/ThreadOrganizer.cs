@@ -350,7 +350,7 @@ namespace Rsdn.Client
 
         private static void SetThreadFreshness(ForumModel forum, ThreadModel thread)
         {
-            thread.IsNew = thread.Updated > (forum.Visited ?? DateTime.MinValue);
+            thread.IsNew = thread.Viewed == null || thread.Updated > (thread.Viewed ?? DateTime.MinValue);
         }
 
         private static void SetPostFreshness(ThreadModel thread, PostModel post)
