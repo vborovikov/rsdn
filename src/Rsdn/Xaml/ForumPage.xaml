@@ -9,20 +9,31 @@
                   xmlns:xi="using:Rsdn.Xaml.Interactivity"
                   xmlns:ctrl="using:Rsdn.Xaml.Controls"
                   xmlns:tkctrl="using:Microsoft.Toolkit.Uwp.UI.Controls"
+                  xmlns:fa="using:FontAwesome.UWP"
                   DataContext="{Binding Forum, Source={StaticResource PresenterLocator}}">
+
+ <Page.Resources>
+  <xi:PostTopicToIconConverter x:Key="PostTopicToIcon" />
+ </Page.Resources>
+
  <ctrl:PullToRefreshMasterDetailsView ItemsSource="{Binding Threads}"
-                                      RefreshCommand="{Binding UpdateCommand}">
+                                      MasterHeader="{Binding}"
+                                      RefreshCommand="{Binding UpdateCommand}"
+                                      BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+  <tkctrl:MasterDetailsView.MasterHeaderTemplate>
+   <DataTemplate x:DataType="pm:ForumPresenter">
+    <StackPanel Orientation="Horizontal"
+                Padding="12"
+                Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
+     <xa:ForumLogo Margin="0,0,12,0"
+                   ForumId="{Binding Id}" />
+     <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+                Text="{Binding Name}" />
+    </StackPanel>
+   </DataTemplate>
+  </tkctrl:MasterDetailsView.MasterHeaderTemplate>
   <tkctrl:MasterDetailsView.MasterCommandBar>
-   <CommandBar>
-    <CommandBar.Content>
-     <StackPanel Orientation="Horizontal"
-                 Padding="12">
-      <xa:ForumLogo Margin="12,0"
-                    ForumId="{Binding Id}" />
-      <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
-                 Text="{Binding Name}" />
-     </StackPanel>
-    </CommandBar.Content>
+   <CommandBar ClosedDisplayMode="Minimal">
     <AppBarButton Command="{Binding UpdateCommand}"
                   Icon="Sync" />
     <AppBarButton Name="FavoriteButton"
@@ -60,9 +71,20 @@
      <ListView.Header>
       <tkctrl:ScrollHeader Mode="QuickReturn"
                            TargetListViewBase="{Binding ElementName=PostsListView}">
-       <TextBlock Text="{Binding Title}"
-                  Margin="12"
-                  Style="{ThemeResource SubtitleTextBlockStyle}" />
+       <StackPanel Orientation="Horizontal"
+                   Padding="12"
+                   Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
+        <fa:FontAwesome Width="24"
+                        Height="24"
+                        Margin="0,0,12,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="24"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                        Icon="{Binding Topic, Converter={StaticResource PostTopicToIcon}}" />
+        <TextBlock Text="{Binding Title}"
+                   Style="{ThemeResource SubtitleTextBlockStyle}" />
+       </StackPanel>
       </tkctrl:ScrollHeader>
      </ListView.Header>
      <ListView.ItemTemplate>

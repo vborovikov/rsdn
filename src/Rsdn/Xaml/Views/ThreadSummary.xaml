@@ -32,9 +32,9 @@
 
   <!--  Topic  -->
   <fa:FontAwesome Grid.RowSpan="4"
-                  Width="48"
-                  Height="48"
-                  Margin="0"
+                  Width="24"
+                  Height="24"
+                  Margin="0,12,12,12"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   FontSize="24"

@@ -316,7 +316,7 @@
          <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <ContentPresenter x:Name="HeaderContentPresenter"
-                          Margin="12,0"
+                          Margin="0"
                           x:DeferLoadStrategy="Lazy"
                           Content="{TemplateBinding MasterHeader}"
                           ContentTemplate="{TemplateBinding MasterHeaderTemplate}"
