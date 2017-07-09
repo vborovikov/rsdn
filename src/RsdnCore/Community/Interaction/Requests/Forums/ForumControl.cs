@@ -62,6 +62,7 @@
 
         public IEnumerable<ThreadModel> Run(ForumThreadsQuery query)
         {
+            this.eventDispatcher.PublishAsync(new ForumRequestedEvent(query.ForumId));
             return ThreadOrganizer.Organize(this.forumGateway.GetThreads(query.ForumId),
                 this.forumGateway.GetForum(query.ForumId));
         }

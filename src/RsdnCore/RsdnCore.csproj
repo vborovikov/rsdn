@@ -57,6 +57,7 @@
     <Compile Include="Community\Interaction\Requests\CommandBase.cs" />
     <Compile Include="Community\Interaction\Requests\EventBase.cs" />
     <Compile Include="Community\Interaction\Requests\Forums\FavoritesChangedEvent.cs" />
+    <Compile Include="Community\Interaction\Requests\Forums\ForumRequestedEvent.cs" />
     <Compile Include="Community\Interaction\Requests\Forums\ForumVisitedEvent.cs" />
     <Compile Include="Community\Interaction\Requests\IAsyncEventHandler.cs" />
     <Compile Include="Community\Interaction\Requests\IEvent.cs" />

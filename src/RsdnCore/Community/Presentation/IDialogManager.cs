@@ -10,5 +10,7 @@
         Task ShowMessage(string content);
 
         Task<bool?> ShowDialog(string dialogType, object dialogModel);
+
+        Task RunAsync(Action action);
     }
 }

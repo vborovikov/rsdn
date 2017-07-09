@@ -1,6 +1,7 @@
 ﻿namespace Rsdn.Community.Presentation
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Reflection;
@@ -15,9 +16,11 @@
 
     public class ShellPresenter : NavigablePresenterHost,
         IAsyncEventHandler<FavoritesChangedEvent>,
+        IAsyncEventHandler<ForumRequestedEvent>,
         IAsyncEventHandler<ForumVisitedEvent>
     {
         private ObservableCollection<ForumHub> forumHubs;
+        private ForumModel currentForum;
 
         public ShellPresenter(INavigationService navigationService, IRequestDispatcher requestDispatcher, IDialogManager dialogManager)
             : base(navigationService, requestDispatcher, dialogManager)
@@ -26,6 +29,12 @@
         }
 
         public ObservableCollection<ForumHub> ForumHubs => this.forumHubs;
+
+        public ForumModel CurrentForum
+        {
+            get { return this.currentForum; }
+            set { this.currentForum = value; RaisePropertyChanged(nameof(this.CurrentForum)); }
+        }
 
         public IUwpCommand ForumCommand => GetCommand<ForumModel>(OpenForum);
 
@@ -42,6 +51,21 @@
 
         Task IAsyncEventHandler<ForumVisitedEvent>.HandleAsync(ForumVisitedEvent e) =>
             LoadHubsAsync();
+
+        Task IAsyncEventHandler<ForumRequestedEvent>.HandleAsync(ForumRequestedEvent e)
+        {
+            //todo: doesn't work as expected
+            return Task.CompletedTask;
+#if false
+            if (this.CurrentForum?.Id == e.ForumId)
+                return Task.CompletedTask;
+
+            return this.dialogManager.RunAsync(delegate
+            {
+                this.CurrentForum = this.forumHubs.SelectMany(h => h.Forums).FirstOrDefault(f => f.Id == e.ForumId);
+            });
+#endif
+        }
 
         internal async Task LoadHubsAsync()
         {

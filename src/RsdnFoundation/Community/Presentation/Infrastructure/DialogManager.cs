@@ -1,9 +1,9 @@
 ﻿namespace Rsdn.Community.Presentation.Infrastructure
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
+    using Windows.ApplicationModel.Core;
+    using Windows.UI.Core;
     using Windows.UI.Popups;
     using Windows.UI.Xaml.Controls;
 
@@ -21,7 +21,7 @@
                 (bool?)null;
         }
 
-        public async Task ShowMessage(string content)
+        public Task ShowMessage(string content)
         {
             var messageDialog = new MessageDialog(content)
             {
@@ -30,7 +30,13 @@
                     new UICommand("OK")
                 }
             };
-            await messageDialog.ShowAsync();
+            return messageDialog.ShowAsync().AsTask();
+        }
+
+        public Task RunAsync(Action action)
+        {
+            return CoreApplication.MainView.CoreWindow.Dispatcher
+                 .RunAsync(CoreDispatcherPriority.Low, () => action()).AsTask();
         }
     }
 }
