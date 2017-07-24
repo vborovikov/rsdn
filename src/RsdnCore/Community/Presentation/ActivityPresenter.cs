@@ -58,13 +58,18 @@
 
         internal async Task LoadThreadsAsync()
         {
+            var threadId = this.CurrentThread?.Model.Id;
+
             this.ThreadsState = ItemsState.Loading;
             this.ThreadsState = await PresenterExtensions.RefreshItemsAsync(
                 this.Threads,
                 this.host.RunQueryAsync(GetThreadsQuery()),
                 m => new ThreadPresenter(this.host) { Model = m });
 
-            this.CurrentThread = this.Threads.FirstOrDefault(thread => thread.IsNew) ?? this.Threads.FirstOrDefault();
+            this.CurrentThread =
+                this.Threads.FirstOrDefault(thread => thread.Model.Id == threadId) ??
+                this.Threads.FirstOrDefault(thread => thread.IsNew) ??
+                this.Threads.FirstOrDefault();
         }
 
         protected override async Task OnNavigatedFromAsync(object parameter)
