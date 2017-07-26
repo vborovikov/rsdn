@@ -10,8 +10,7 @@
 
     public class PostControl :
         IQueryHandler<ThreadPostsQuery, IEnumerable<PostModel>>,
-        ICommandHandler<MarkThreadAsViewedCommand>,
-        IQueryHandler<PostsQuery, IEnumerable<ThreadModel>>
+        ICommandHandler<MarkThreadAsViewedCommand>
     {
         private readonly IPostGateway postGateway;
 
@@ -23,11 +22,6 @@
         public void Execute(MarkThreadAsViewedCommand command)
         {
             this.postGateway.MarkThreadAsViewed(command.ThreadId);
-        }
-
-        public IEnumerable<ThreadModel> Run(PostsQuery query)
-        {
-            return this.postGateway.GetUserPosts(query.UserId);
         }
 
         public IEnumerable<PostModel> Run(ThreadPostsQuery query)

@@ -93,9 +93,14 @@
             using (var db = this.databaseFactory.GetDatabase())
             {
                 var details = db.Query<ThreadModel>(
-                    ThreadsSelect +
+                    "select Post.Id, Post.Title, Post.Message as Excerpt, Post.Username, " +
+                    "ifnull(Post.Updated, Post.Posted) as Updated, Thread.Viewed, " +
+                    "Thread.PostCount, Thread.NewPostCount, Ratings.* " +
+                    "from Post " +
                     "join Thread on Post.Id = Thread.ThreadId " +
+
                     RatingsJoin +
+
                     "where Post.ThreadId is null and Post.ForumId = ? " +
                     "order by Post.Updated desc, Post.Posted desc", forumId);
 

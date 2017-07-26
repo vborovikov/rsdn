@@ -60,25 +60,6 @@
             }
         }
 
-        public IEnumerable<ThreadModel> GetUserPosts(int userId)
-        {
-            using (var db = this.databaseFactory.GetDatabase())
-            {
-                //todo: get replies
-                //todo: get posts
-
-                //var posts = db.Query<ThreadModel>(
-                //    ThreadsSelect +
-                //    //fixme: how to join original thread posts?
-                //    "join Thread on Post.ThreadId = Thread.ThreadId " +
-                //    RatingsJoin +
-                //    "where Post.UserId = ? " +
-                //    "order by Post.Updated desc, Post.Posted desc", userId);
-
-                return Enumerable.Empty<ThreadModel>();
-            }
-        }
-
         public void MarkThreadAsViewed(int threadId)
         {
             using (var db = this.databaseFactory.GetDatabase())
