@@ -7,6 +7,12 @@
 
     public abstract class Gateway : IGateway
     {
+        protected const string ThreadsSelect =
+            "select Post.Id, Post.Title, Post.Message as Excerpt, Post.Username, " +
+            "ifnull(Post.Updated, Post.Posted) as Updated, Thread.Viewed, " +
+            "Thread.PostCount, Thread.NewPostCount, Ratings.* " +
+            "from Post ";
+
         protected const string RatingsJoin =
             "left outer join " +
             "(select Rating.PostId, " +

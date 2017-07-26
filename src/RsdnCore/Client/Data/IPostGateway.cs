@@ -12,6 +12,8 @@
 
         IEnumerable<PostModel> GetThreadPosts(int threadId);
 
+        IEnumerable<ThreadModel> GetUserPosts(int userId);
+
         void MarkThreadAsViewed(int threadId);
     }
 }

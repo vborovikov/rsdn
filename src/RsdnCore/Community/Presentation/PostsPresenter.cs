@@ -20,7 +20,7 @@
 
         protected override IQuery<IEnumerable<ThreadModel>> GetThreadsQuery()
         {
-            return new PostsQuery();
+            return new PostsQuery(-1);
         }
     }
 }
