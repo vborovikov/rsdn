@@ -1,26 +1,24 @@
 ﻿namespace Rsdn.Client.Data.Storage
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using SQLite;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Reply")]
     internal class DbReply
     {
-        [PrimaryKey, AutoIncrement]
+        [Key]
         public int Id { get; set; }
 
         public int? PostId { get; set; }
 
-        [NotNull]
+        [Required]
         public int ForumId { get; set; }
 
-        [NotNull]
+        [Required]
         public string Title { get; set; }
 
-        [NotNull]
+        [Required]
         public string Message { get; set; }
     }
 }

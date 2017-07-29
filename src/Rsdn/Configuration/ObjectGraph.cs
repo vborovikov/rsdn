@@ -63,9 +63,6 @@
 
         private static void BuildData(ContainerWrapper wrapper)
         {
-            wrapper.Container
-                .RegisterSingleton<IDatabaseFactory, DatabaseFactory>();
-
             var dataAccessAssembly = typeof(Gateway).GetTypeInfo().Assembly;
             var baseGatewayIface = typeof(IGateway);
 

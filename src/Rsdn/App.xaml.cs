@@ -26,8 +26,6 @@
 #endif
             this.InitializeComponent();
             this.Suspending += HandleSuspending;
-
-            DatabaseFactory.CreateDatabase();
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)

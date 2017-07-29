@@ -148,6 +148,8 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Client\Data\Fetch\JanusATSoapClient.cs" />
+    <Compile Include="Client\Data\Storage\EfCoreExtensions.cs" />
+    <Compile Include="Client\Data\Storage\RsdnDbContext.cs" />
     <Compile Include="Xaml\Controls\GlyphMenuFlyoutItem.cs" />
     <Compile Include="Xaml\Controls\PullToRefreshMasterDetailsView.cs" />
     <Compile Include="Xaml\Interactivity\BooleanForeground.cs" />
@@ -170,10 +172,8 @@
     <Compile Include="Client\Data\Storage\TransactionWrapper.cs" />
     <Compile Include="Client\Data\Storage\Keeper.cs" />
     <Compile Include="Client\Data\Gateway.cs" />
-    <Compile Include="Client\Data\Storage\DatabaseFactory.cs" />
     <Compile Include="Client\Data\Storage\DbForum.cs" />
     <Compile Include="Client\Data\Storage\DbGroup.cs" />
-    <Compile Include="Client\Data\Storage\IDatabaseFactory.cs" />
     <Compile Include="Client\Data\Storage\DbPost.cs" />
     <Compile Include="Client\Data\Storage\DbRating.cs" />
     <Compile Include="Client\Data\Storage\DbReply.cs" />

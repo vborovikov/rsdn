@@ -2,24 +2,20 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Common;
     using System.Linq;
     using System.Threading.Tasks;
+    using Polly;
 
     public abstract class Gateway : IGateway
     {
-        protected const string RatingsJoin =
-            "left outer join " +
-            "(select Rating.PostId, " +
-            "sum(case when Rating.Value = 1 then 1 else 0 end) as InterestingCount, " +
-            "sum(case when Rating.Value = 2 then 1 else 0 end) as ThanksCount, " +
-            "sum(case when Rating.Value = 3 then 1 else 0 end) as ExcellentCount, " +
-            "sum(case when Rating.Value = -4 then 1 else 0 end) as AgreedCount, " +
-            "sum(case when Rating.Value = 0 then 1 else 0 end) as DisagreedCount, " +
-            "sum(case when Rating.Value = -3 then 1 else 0 end) as Plus1Count, " +
-            "sum(case when Rating.Value = -2 then 1 else 0 end) as FunnyCount " +
-            "from Rating " +
-            "group by Rating.PostId " +
-            ") as Ratings " +
-            "on Post.Id = Ratings.PostId ";
+        protected static readonly Policy updatePolicy;
+
+        static Gateway()
+        {
+            updatePolicy = Policy
+                .Handle<DbException>()
+                .WaitAndRetry(2, r => TimeSpan.FromSeconds(1));
+        }
     }
 }

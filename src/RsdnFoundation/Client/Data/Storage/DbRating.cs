@@ -1,30 +1,28 @@
 ﻿namespace Rsdn.Client.Data.Storage
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using SQLite;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Rating")]
     internal class DbRating
     {
-        [NotNull]
+        [Required]
         public int PostId { get; set; }
 
-        [NotNull]
+        [Required]
         public int ThreadId { get; set; }
 
-        [NotNull]
+        [Required]
         public int UserId { get; set; }
 
-        [NotNull]
+        [Required]
         public int UserFactor { get; set; }
 
-        [NotNull]
+        [Required]
         public int Value { get; set; }
 
-        [NotNull]
+        [Required]
         public DateTime Rated { get; set; }
     }
 }

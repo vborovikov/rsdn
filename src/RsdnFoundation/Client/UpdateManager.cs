@@ -18,10 +18,10 @@ namespace Rsdn.Client
         private readonly Fetcher fetcher;
         private readonly Keeper keeper;
 
-        public UpdateManager(ICredentialManager credentialManager, IDatabaseFactory databaseFactory)
+        public UpdateManager(ICredentialManager credentialManager)
         {
             this.fetcher = new Fetcher(credentialManager.Credential);
-            this.keeper = new Keeper(databaseFactory);
+            this.keeper = new Keeper();
 
             credentialManager.CredentialChanged += HandleCredentialChanged;
         }

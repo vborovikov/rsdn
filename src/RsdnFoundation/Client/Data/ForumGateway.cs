@@ -3,26 +3,18 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using AutoMapper;
+    using Community;
     using Community.Interaction;
-    using Polly;
-    using SQLite;
     using Storage;
 
     public class ForumGateway : Gateway, IForumGateway
     {
         private const int MaxSidebarForumCount = 6;
         private static readonly IMapper mapper;
-        private static readonly Policy updatePolicy;
-        private readonly IDatabaseFactory databaseFactory;
 
         static ForumGateway()
         {
-            updatePolicy = Policy
-                .Handle<SQLiteException>()
-                .WaitAndRetry(2, r => TimeSpan.FromSeconds(1));
-
             var mapperConfig = new MapperConfiguration(config =>
             {
                 config
@@ -34,27 +26,26 @@
             mapper = mapperConfig.CreateMapper();
         }
 
-        public ForumGateway(IDatabaseFactory databaseFactory)
+        public ForumGateway()
         {
-            this.databaseFactory = databaseFactory;
         }
 
         public IEnumerable<ForumModel> GetForums()
         {
-            using (var db = this.databaseFactory.GetDatabase())
+            using (var db = new RsdnDbContext())
             {
-                return mapper.Map<IEnumerable<ForumModel>>(db.Table<DbForum>());
+                return mapper.Map<IEnumerable<ForumModel>>(db.Forums);
             }
         }
 
         public IEnumerable<ForumModel> GetFavoriteForums()
         {
-            using (var db = this.databaseFactory.GetDatabase())
+            using (var db = new RsdnDbContext())
             {
-                var forums = from forum in db.Table<DbForum>()
-                             where forum.IsFavorite
-                             orderby forum.Visited descending
-                             select forum;
+                IQueryable<DbForum> forums = from forum in db.Forums
+                                             where forum.IsFavorite
+                                             orderby forum.Visited descending
+                                             select forum;
                 forums = forums.Take(MaxSidebarForumCount);
 
                 return mapper.Map<IEnumerable<ForumModel>>(forums.ToArray());
@@ -63,12 +54,12 @@
 
         public IEnumerable<ForumModel> GetRecentForums()
         {
-            using (var db = this.databaseFactory.GetDatabase())
+            using (var db = new RsdnDbContext())
             {
-                var forums = from forum in db.Table<DbForum>()
-                             orderby forum.Visited descending
-                             where forum.Visited != null && forum.IsFavorite == false
-                             select forum;
+                IQueryable<DbForum> forums = from forum in db.Forums
+                                             where forum.Visited != null && forum.IsFavorite == false
+                                             orderby forum.Visited descending
+                                             select forum;
                 forums = forums.Take(MaxSidebarForumCount);
 
                 return mapper.Map<IEnumerable<ForumModel>>(forums.ToArray());
@@ -77,9 +68,9 @@
 
         public IEnumerable<ForumStatus> GetForumsStatus()
         {
-            using (var db = this.databaseFactory.GetDatabase())
+            using (var db = new RsdnDbContext())
             {
-                var forumsStatus = from forum in db.Table<DbForum>()
+                var forumsStatus = from forum in db.Forums
                                    select new ForumStatus(forum.Id, forum.IsFavorite,
                                         forum.Fetched, forum.Visited,
                                         forum.Posted, forum.PostCount);
@@ -90,31 +81,43 @@
 
         public IEnumerable<ThreadModel> GetThreads(int forumId)
         {
-            using (var db = this.databaseFactory.GetDatabase())
+            using (var db = new RsdnDbContext())
             {
-                var details = db.Query<ThreadModel>(
-                    "select Post.Id, Post.Title, Post.Message as Excerpt, Post.Username, " +
-                    "ifnull(Post.Updated, Post.Posted) as Updated, Thread.Viewed, " +
-                    "Thread.PostCount, Thread.NewPostCount, Ratings.* " +
-                    "from Post " +
-                    "join Thread on Post.Id = Thread.ThreadId " +
+                var threads = from post in db.Posts
+                              where post.ThreadId == null && post.ForumId == forumId
+                              join rating in db.Ratings on post.Id equals rating.ThreadId into ratings
+                              join thread in db.Threads on post.Id equals thread.ThreadId
+                              orderby post.Updated descending, post.Posted descending
+                              select new ThreadModel
+                              {
+                                  Id = post.Id,
+                                  Title = post.Title,
+                                  Excerpt = post.Message,
+                                  Username = post.Username,
+                                  Updated = post.Updated ?? post.Posted,
+                                  Viewed = thread.Viewed,
+                                  NewPostCount = thread.NewPostCount,
+                                  PostCount = thread.PostCount,
+                                  InterestingCount = ratings.Count(r => r.Value == (int)VoteValue.Interesting),
+                                  ThanksCount = ratings.Count(r => r.Value == (int)VoteValue.Thanks),
+                                  ExcellentCount = ratings.Count(r => r.Value == (int)VoteValue.Excellent),
+                                  AgreedCount = ratings.Count(r => r.Value == (int)VoteValue.Agreed),
+                                  DisagreedCount = ratings.Count(r => r.Value == (int)VoteValue.Disagreed),
+                                  Plus1Count = ratings.Count(r => r.Value == (int)VoteValue.Plus1),
+                                  FunnyCount = ratings.Count(r => r.Value == (int)VoteValue.Funny),
+                              };
 
-                    RatingsJoin +
-
-                    "where Post.ThreadId is null and Post.ForumId = ? " +
-                    "order by Post.Updated desc, Post.Posted desc", forumId);
-
-                return details;
+                return threads.ToArray();
             }
         }
 
         public void MarkForumAsVisited(int forumId)
         {
-            using (var db = this.databaseFactory.GetDatabase())
+            using (var db = new RsdnDbContext())
             {
-                var forum = db.Get<DbForum>(forumId);
+                var forum = db.Forums.Find(forumId);
                 forum.Visited = DateTime.UtcNow;
-                updatePolicy.Execute(() => db.Update(forum));
+                updatePolicy.Execute(() => db.SaveChanges());
             }
         }
 
@@ -130,10 +133,10 @@
 
         public IEnumerable<GroupModel> GetGroups()
         {
-            using (var db = this.databaseFactory.GetDatabase())
+            using (var db = new RsdnDbContext())
             {
-                var groups = db.Table<DbGroup>().ToArray();
-                var forums = db.Table<DbForum>().ToArray();
+                var groups = db.Groups.ToArray();
+                var forums = db.Forums.ToArray();
 
                 var forumsInGroups = from g in groups
                                      join f in forums on g.Id equals f.GroupId into groupForums
@@ -155,20 +158,20 @@
 
         public ForumModel GetForum(int forumId)
         {
-            using (var db = this.databaseFactory.GetDatabase())
+            using (var db = new RsdnDbContext())
             {
-                var forum = db.Get<DbForum>(forumId);
+                var forum = db.Forums.Find(forumId);
                 return mapper.Map<ForumModel>(forum);
             }
         }
 
         private void ChangeFavorite(int forumId, bool flag)
         {
-            using (var db = this.databaseFactory.GetDatabase())
+            using (var db = new RsdnDbContext())
             {
-                var forum = db.Get<DbForum>(forumId);
+                var forum = db.Forums.Find(forumId);
                 forum.IsFavorite = flag;
-                db.Update(forum);
+                db.SaveChanges();
             }
         }
     }

@@ -7,12 +7,11 @@
     using AutoMapper;
     using Community;
     using Janus;
-    using SQLite;
+    using Microsoft.EntityFrameworkCore;
 
     internal class Keeper
     {
         private static readonly IMapper mapper;
-        private readonly IDatabaseFactory databaseFactory;
 
         static Keeper()
         {
@@ -60,9 +59,8 @@
             mapper = mapperConfig.CreateMapper();
         }
 
-        public Keeper(IDatabaseFactory databaseFactory)
+        public Keeper()
         {
-            this.databaseFactory = databaseFactory;
         }
 
         public void StoreDirectory(ForumResponse directory, CancellationToken cancelToken)
@@ -70,23 +68,17 @@
             var groups = mapper.Map<IEnumerable<DbGroup>>(directory.groupList);
             var forums = mapper.Map<IEnumerable<DbForum>>(directory.forumList);
 
-            using (var wrapper = new TransactionWrapper(this.databaseFactory, cancelToken))
+            using (var wrapper = new TransactionWrapper(cancelToken))
             {
                 var db = wrapper.Connection;
-                foreach (var group in groups)
-                {
-                    db.InsertOrReplace(group);
-                }
-                foreach (var forum in forums)
-                {
-                    db.InsertOrReplace(forum);
-                }
+                db.Groups.AddOrUpdateRange(groups, g => g.Id);
+                db.Forums.AddOrUpdateRange(forums, f => f.Id);
             }
         }
 
         public IEnumerable<JanusMessageInfo> StoreChanges(ChangeResponse changes, CancellationToken cancelToken)
         {
-            using (var wrapper = new TransactionWrapper(this.databaseFactory, cancelToken))
+            using (var wrapper = new TransactionWrapper(cancelToken))
             {
                 var db = wrapper.Connection;
 
@@ -94,7 +86,7 @@
 
                 var forumUpdates = from post in changes.newMessages
                                    group post by post.forumId into forumMessages
-                                   join forum in db.Table<DbForum>() on forumMessages.Key equals forum.Id
+                                   join forum in db.Forums on forumMessages.Key equals forum.Id
                                    select new
                                    {
                                        ForumId = forum.Id,
@@ -108,11 +100,11 @@
                                    };
                 var newMsgs = forumUpdates.SelectMany(fu => fu.NewMessages).ToArray();
                 var newPosts = mapper.Map<IEnumerable<DbPost>>(newMsgs);
-                db.InsertAll(newPosts);
+                db.Posts.AddRange(newPosts);
 
                 var oldMsgs = forumUpdates.SelectMany(fu => fu.OldMessages).ToArray();
                 var oldPosts = mapper.Map<IEnumerable<DbPost>>(oldMsgs);
-                db.UpdateAll(oldPosts);
+                db.Posts.UpdateRange(oldPosts);
 
                 var orphanMsgs = changes.newMessages.Except(newMsgs).Except(oldMsgs).ToArray();
                 return orphanMsgs;
@@ -121,23 +113,20 @@
 
         public void StoreArchives(TopicResponse archives, CancellationToken cancelToken)
         {
-            using (var wrapper = new TransactionWrapper(this.databaseFactory, cancelToken))
+            using (var wrapper = new TransactionWrapper(cancelToken))
             {
                 var db = wrapper.Connection;
 
                 StoreRatings(db, archives.Rating);
 
                 var arcPosts = mapper.Map<IEnumerable<DbPost>>(archives.Messages);
-                foreach (var arcPost in arcPosts)
-                {
-                    db.InsertOrReplace(arcPost);
-                }
+                db.Posts.AddOrUpdateRange(arcPosts, p => p.Id);
             }
         }
 
         public IEnumerable<int> StoreStats(IEnumerable<int> threadIds, CancellationToken cancelToken)
         {
-            using (var wrapper = new TransactionWrapper(this.databaseFactory, cancelToken))
+            using (var wrapper = new TransactionWrapper(cancelToken))
             {
                 var db = wrapper.Connection;
 
@@ -152,7 +141,7 @@
                         missingThreadIdList.Add(threadId);
                         continue;
                     }
-                    var threadReplies = db.Table<DbPost>().Where(p => p.ThreadId == threadId);
+                    var threadReplies = db.Posts.Where(p => p.ThreadId == threadId);
                     var thread = db.Find<DbThread>(threadId) ?? new DbThread
                     {
                         ThreadId = threadId,
@@ -161,11 +150,12 @@
                     thread.PostCount = threadReplies.Count();
                     var threadViewed = (thread.Viewed ?? DateTime.MinValue);
                     thread.NewPostCount = threadReplies.Count(p => p.Posted > threadViewed);
-                    db.InsertOrReplace(thread);
+                    db.Threads.AddOrUpdate(thread, t => t.ThreadId);
 
-                    threadPost.Updated = threadReplies.Any() ? threadReplies.Max(p => p.Updated ?? p.Posted) :
+                    threadPost.Updated = threadReplies.Any() ?
+                        DbPost.MostRecent(threadReplies.Max(p => p.Updated), threadReplies.Max(p => p.Posted)) :
                         threadPost.Updated ?? threadPost.Posted;
-                    db.Update(threadPost);
+                    //db.Update(threadPost);
 
                     forumIdList.Add(threadPost.ForumId);
                 }
@@ -174,16 +164,16 @@
                 var forumIds = forumIdList.Distinct().ToArray();
                 foreach (var forumId in forumIds)
                 {
-                    var forum = db.Get<DbForum>(forumId);
-                    var forumPosts = db.Table<DbPost>().Where(p => p.ForumId == forumId);
+                    var forum = db.Forums.Find(forumId);
+                    var forumPosts = db.Posts.Where(p => p.ForumId == forumId);
 
                     forum.Fetched = DateTime.UtcNow;
                     forum.PostCount = forumPosts.Count(p => p.ThreadId == null);
                     if (forumPosts.Any())
                     {
-                        forum.Posted = forumPosts.Max(p => p.Updated ?? p.Posted);
+                        forum.Posted = DbPost.MostRecent(forumPosts.Max(p => p.Updated), forumPosts.Max(p => p.Posted));
                     }
-                    db.Update(forum);
+                    //db.Update(forum);
                 }
 
                 return missingThreadIdList.ToArray();
@@ -192,9 +182,9 @@
 
         public IEnumerable<DbForum> GetForums(IEnumerable<int> forumIds)
         {
-            using (var connection = this.databaseFactory.GetDatabase())
+            using (var connection = new RsdnDbContext())
             {
-                var forums = from forum in connection.Table<DbForum>()
+                var forums = from forum in connection.Forums
                              where forumIds.Contains(forum.Id)
                              select forum;
 
@@ -202,7 +192,7 @@
             }
         }
 
-        private static void StoreRatings(SQLiteConnection db, JanusRatingInfo[] ratings)
+        private static void StoreRatings(RsdnDbContext db, JanusRatingInfo[] ratings)
         {
             if (ratings == null || ratings.Length == 0)
                 return;
@@ -212,24 +202,20 @@
                                select rating;
             foreach (var clearCmd in clearRatings)
             {
-                db.Table<DbRating>().Delete(r => r.PostId == clearCmd.messageId && r.UserId == clearCmd.userId);
+                db.Ratings
+                    .Where(r => r.PostId == clearCmd.messageId && r.UserId == clearCmd.userId)
+                    .Delete();
             }
 
             var upvotes = from rating in ratings
                           where rating.rate > 0
                           select rating;
-            foreach (var upvote in mapper.Map<IEnumerable<DbRating>>(upvotes))
-            {
-                db.InsertOrReplace(upvote);
-            }
+            db.Ratings.AddOrUpdateRange(mapper.Map<IEnumerable<DbRating>>(upvotes));
 
             var likes = from rating in ratings
                         where rating.rate <= 0 && rating.rate != (int)VoteValue.None
                         select rating;
-            foreach (var like in mapper.Map<IEnumerable<DbRating>>(likes))
-            {
-                db.InsertOrReplace(like);
-            }
+            db.Ratings.AddOrUpdateRange(mapper.Map<IEnumerable<DbRating>>(likes));
         }
     }
 }

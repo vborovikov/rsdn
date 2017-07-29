@@ -1,42 +1,48 @@
 ﻿namespace Rsdn.Client.Data.Storage
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using SQLite;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Post")]
     internal class DbPost
     {
-        [PrimaryKey]
+        [Key]
         public int Id { get; set; }
 
         public int? ThreadId { get; set; }
 
         public int? SubthreadId { get; set; }
 
-        [NotNull]
+        [Required]
         public int ForumId { get; set; }
 
-        [NotNull]
+        [Required]
         public string Title { get; set; }
 
-        [NotNull]
+        [Required]
         public string Message { get; set; }
 
-        [NotNull]
+        [Required]
         public int UserId { get; set; }
 
-        [NotNull]
+        [Required]
         public string Username { get; set; }
 
-        [NotNull]
+        [Required]
         public DateTime Posted { get; set; }
 
         public DateTime? Updated { get; set; }
 
-        [NotNull]
+        [Required]
         public bool IsClosed { get; set; }
+
+        public static DateTime MostRecent(DateTime? updated, DateTime posted)
+        {
+            if (updated == null)
+                return posted;
+
+            return updated.Value > posted ? updated.Value : posted;
+        }
     }
 }

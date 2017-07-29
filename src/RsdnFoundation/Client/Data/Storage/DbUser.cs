@@ -1,18 +1,16 @@
 ﻿namespace Rsdn.Client.Data.Storage
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using SQLite;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("User")]
     internal class DbUser
     {
-        [PrimaryKey]
+        [Key]
         public int Id { get; set; }
 
-        [NotNull]
+        [Required]
         public string Username { get; set; }
     }
 }

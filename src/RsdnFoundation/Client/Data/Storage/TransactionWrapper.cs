@@ -1,39 +1,38 @@
 ﻿namespace Rsdn.Client.Data.Storage
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading;
-    using System.Threading.Tasks;
-    using SQLite;
+    using Microsoft.EntityFrameworkCore.Storage;
 
     internal class TransactionWrapper : IDisposable
     {
         private readonly CancellationToken cancelToken;
+        private readonly IDbContextTransaction transaction;
 
-        public TransactionWrapper(IDatabaseFactory databaseFactory, CancellationToken cancelToken)
+        public TransactionWrapper(CancellationToken cancelToken)
         {
             this.cancelToken = cancelToken;
-            this.Connection = databaseFactory.GetDatabase();
-            this.Connection.BeginTransaction();
+            this.Connection = new RsdnDbContext();
+            this.transaction = this.Connection.Database.BeginTransaction();
 
             cancelToken.Register(Cancel);
         }
 
-        public SQLiteConnection Connection { get; }
+        public RsdnDbContext Connection { get; }
 
         public void Dispose()
         {
             if (this.cancelToken.IsCancellationRequested == false)
             {
-                this.Connection.Commit();
+                this.Connection.SaveChanges();
+                this.transaction.Commit();
             }
             this.Connection.Dispose();
         }
 
         private void Cancel()
         {
-            this.Connection.Rollback();
+            this.transaction.Rollback();
         }
     }
 }
