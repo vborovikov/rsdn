@@ -10,11 +10,32 @@
     using Community;
     using Data.Fetch;
     using Janus;
+    using Windows.Data.Json;
     using Windows.Security.Credentials;
+    using Windows.Storage;
 
     public class CredentialManager : ICredentialManager
     {
         private const string ResourceName = "RSDN";
+
+        private static readonly ApplicationDataContainer localSettings;
+
+        static CredentialManager()
+        {
+            localSettings = ApplicationData.Current.LocalSettings;
+        }
+
+        public CredentialManager()
+        {
+            if (RestoreUser() == false)
+            {
+                this.User = new UserModel
+                {
+                    Id = -1,
+                    Alias = String.Empty,
+                };
+            }
+        }
 
         public bool HasCredential
         {
@@ -40,6 +61,8 @@
             get { return GetCredential(); }
             set { SetCredential(value); }
         }
+
+        public UserModel User { get; private set; }
 
         public event EventHandler CredentialChanged;
 
@@ -72,16 +95,58 @@
 
                 try
                 {
-                    var users = await service.GetUserByIdsAsync(new UserByIdsRequest
+                    var posts = await service.GetNewDataAsync(new ChangeRequest
                     {
                         userName = credential.UserName,
                         password = credential.Password,
-                        userIds = new ArrayOfInt { 1 },
+                        maxOutput = 0,
+                        messageRowVersion = new byte[8],
+                        ratingRowVersion = new byte[8],
+                        moderateRowVersion = new byte[8],
+                        subscribedForums = new RequestForumInfo[]
+                        {
+                            new RequestForumInfo
+                            {
+                                forumId = 1,
+                                isFirstRequest = true
+                            }
+                        }
                     });
 
-                    if (users.Body.GetUserByIdsResult.users.Any() == false)
+                    if (posts.Body.GetNewDataResult.userId == 0)
                     {
                         return CredentialVerificationResult.WrongCredential;
+                    }
+                    else
+                    {
+                        var userId = posts.Body.GetNewDataResult.userId;
+
+                        var users = await service.GetUserByIdsAsync(new UserByIdsRequest
+                        {
+                            userName = credential.UserName,
+                            password = credential.Password,
+                            userIds = new ArrayOfInt { userId },
+                        });
+
+                        var user = users.Body.GetUserByIdsResult.users.FirstOrDefault();
+                        if (user == null)
+                        {
+                            return CredentialVerificationResult.WrongCredential;
+                        }
+
+                        this.User = new UserModel
+                        {
+                            Id = user.userId,
+                            Alias = user.userNick,
+                            Name = user.userName,
+                            RealName = user.realName,
+                            Origin = user.whereFrom,
+                            Address = user.homePage,
+                            Email = user.publicEmail,
+                            Interests = user.specialization,
+                            Signature = user.origin,
+                        };
+                        StoreUser();
                     }
                 }
                 catch (Exception)
@@ -96,6 +161,51 @@
         protected virtual void OnCredentialChanged(EventArgs e)
         {
             this.CredentialChanged?.Invoke(this, e);
+        }
+
+        private bool RestoreUser()
+        {
+            var userStr = localSettings.Values[nameof(this.User)] as string;
+            if (String.IsNullOrWhiteSpace(userStr) == false)
+            {
+                JsonObject userJson;
+                if (JsonObject.TryParse(userStr, out userJson))
+                {
+                    this.User = new UserModel
+                    {
+                        Id = Convert.ToInt32(userJson.GetNamedNumber(nameof(UserModel.Id))),
+                        Alias = userJson.GetNamedString(nameof(UserModel.Alias), String.Empty),
+                        Name = userJson.GetNamedString(nameof(UserModel.Name), String.Empty),
+                        RealName = userJson.GetNamedString(nameof(UserModel.RealName), String.Empty),
+                        Origin = userJson.GetNamedString(nameof(UserModel.Origin), String.Empty),
+                        Address = userJson.GetNamedString(nameof(UserModel.Address), String.Empty),
+                        Email = userJson.GetNamedString(nameof(UserModel.Email), String.Empty),
+                        Interests = userJson.GetNamedString(nameof(UserModel.Interests), String.Empty),
+                        Signature = userJson.GetNamedString(nameof(UserModel.Signature), String.Empty),
+                    };
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void StoreUser()
+        {
+            var userJson = new JsonObject();
+
+            userJson[nameof(UserModel.Id)] = JsonValue.CreateNumberValue(this.User.Id);
+            userJson[nameof(UserModel.Alias)] = JsonValue.CreateStringValue(this.User.Alias);
+            userJson[nameof(UserModel.Name)] = JsonValue.CreateStringValue(this.User.Name);
+            userJson[nameof(UserModel.RealName)] = JsonValue.CreateStringValue(this.User.RealName);
+            userJson[nameof(UserModel.Origin)] = JsonValue.CreateStringValue(this.User.Origin);
+            userJson[nameof(UserModel.Address)] = JsonValue.CreateStringValue(this.User.Address);
+            userJson[nameof(UserModel.Email)] = JsonValue.CreateStringValue(this.User.Email);
+            userJson[nameof(UserModel.Interests)] = JsonValue.CreateStringValue(this.User.Interests);
+            userJson[nameof(UserModel.Signature)] = JsonValue.CreateStringValue(this.User.Signature);
+
+            localSettings.Values[nameof(this.User)] = userJson.Stringify();
         }
 
         private NetworkCredential GetCredential()

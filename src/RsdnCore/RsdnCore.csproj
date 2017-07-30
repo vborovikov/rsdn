@@ -99,6 +99,7 @@
     <Compile Include="Community\Presentation\PresenterExtensions.cs" />
     <Compile Include="Community\Presentation\PresenterLocator.cs" />
     <Compile Include="Community\Presentation\VotesPresenter.cs" />
+    <Compile Include="Community\UserModel.cs" />
     <Compile Include="Community\Votes.cs" />
     <Compile Include="Community\VotesExtensions.cs" />
     <Compile Include="Community\VoteValue.cs" />

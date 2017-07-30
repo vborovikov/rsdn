@@ -14,6 +14,8 @@
 
         NetworkCredential Credential { get; set; }
 
+        UserModel User { get; }
+
         event EventHandler CredentialChanged;
 
         Task<CredentialVerificationResult> VerifyCredentialAsync(NetworkCredential credential, CancellationToken cancelToken);

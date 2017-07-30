@@ -15,6 +15,8 @@
 
         public string Username { get; set; }
 
+        public string UserId { get; set; }
+
         public DateTime Updated { get; set; }
 
         public DateTime? Viewed { get; set; }

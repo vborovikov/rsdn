@@ -8,6 +8,7 @@
     public enum PostTopic
     {
         Unknown,
+
         Comment,
         Website,
         News,
@@ -15,5 +16,8 @@
         Video,
         Help,
         Code,
+
+        Post,
+        Reply,
     }
 }

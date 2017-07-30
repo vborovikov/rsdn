@@ -34,6 +34,12 @@
                 case PostTopic.Help:
                     return FontAwesomeIcon.QuestionCircle;
 
+                case PostTopic.Post:
+                    return FontAwesomeIcon.SendOutline;
+
+                case PostTopic.Reply:
+                    return FontAwesomeIcon.Inbox;
+
                 default:
                     return FontAwesomeIcon.CommentOutline;
             }
