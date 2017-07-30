@@ -14,6 +14,7 @@
         protected readonly IPresenterHost host;
         private ItemsState threadsState;
         private ThreadPresenter currentThread;
+        private ThreadPresenter oldThread;
 
         protected ActivityPresenter(IPresenterHost host)
         {
@@ -85,9 +86,12 @@
         private async Task PrepareThreadAsync(ThreadPresenter newThread)
         {
             if (newThread != null)
+            {
                 await newThread.LoadPostsAsync();
-            if (this.currentThread != null)
-                await this.currentThread.MarkAsViewedAsync();
+                if (this.oldThread != null)
+                    await this.oldThread.MarkAsViewedAsync();
+                this.oldThread = newThread;
+            }
         }
     }
 }
