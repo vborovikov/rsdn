@@ -370,7 +370,15 @@
             }
 
             // read stream
-            var bytes = Convert.FromBase64String(base64);
+            byte[] bytes = null;
+            try
+            {
+                bytes = Convert.FromBase64String(base64);
+            }
+            catch (FormatException)
+            {
+                return null;
+            }
 
             // create bitmap
             using (var ms = new InMemoryRandomAccessStream())
