@@ -14,7 +14,8 @@
         ICommandHandler<SigninCommand>,
         IQueryHandler<CredentialQuery, NetworkCredential>,
         IAsyncQueryHandler<VerifyCredentialQuery, CredentialVerificationResult>,
-        IQueryHandler<HasCredentialQuery, bool>
+        IQueryHandler<HasCredentialQuery, bool>,
+        IQueryHandler<UserQuery, UserModel>
     {
         private readonly ICredentialManager credentialMan;
 
@@ -31,6 +32,11 @@
         public NetworkCredential Run(CredentialQuery query)
         {
             return this.credentialMan.Credential;
+        }
+
+        public UserModel Run(UserQuery query)
+        {
+            return this.credentialMan.User;
         }
 
         public bool Run(HasCredentialQuery query)

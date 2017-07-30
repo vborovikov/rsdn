@@ -55,6 +55,7 @@
     <Compile Include="Community\Interaction\PostActivityModel.cs" />
     <Compile Include="Community\Interaction\ReplyActivityModel.cs" />
     <Compile Include="Community\Interaction\Requests\CommandBase.cs" />
+    <Compile Include="Community\Interaction\Requests\Credentials\UserQuery.cs" />
     <Compile Include="Community\Interaction\Requests\EventBase.cs" />
     <Compile Include="Community\Interaction\Requests\Forums\FavoritesChangedEvent.cs" />
     <Compile Include="Community\Interaction\Requests\Forums\ForumRequestedEvent.cs" />
