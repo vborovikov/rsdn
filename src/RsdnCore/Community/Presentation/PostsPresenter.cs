@@ -18,6 +18,14 @@
 
         public override string Name => "Posts";
 
+        protected override async Task OnDeserializingAsync(IDictionary<string, object> state)
+        {
+            using (Busy())
+            {
+                await LoadThreadsAsync();
+            }
+        }
+
         protected override IQuery<IEnumerable<ThreadModel>> GetThreadsQuery()
         {
             return new PostsQuery();

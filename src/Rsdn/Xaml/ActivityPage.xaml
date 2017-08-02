@@ -1,17 +1,93 @@
 ﻿<xa:NavigablePage x:Class="Rsdn.Xaml.ActivityPage"
                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                  xmlns:view="using:Rsdn.Xaml.Views"
-                  xmlns:xa="using:Rsdn.Xaml">
- <Grid>
-  <Grid.ColumnDefinitions>
-   <ColumnDefinition Width="0.4*" />
-   <ColumnDefinition Width="0.6*" />
-  </Grid.ColumnDefinitions>
+                  xmlns:ai="using:Microsoft.Xaml.Interactions.Core"
+                  xmlns:xa="using:Rsdn.Xaml"
+                  xmlns:i="using:Microsoft.Xaml.Interactivity"
+                  xmlns:p="using:Rsdn.Xaml.Views"
+                  xmlns:pm="using:Rsdn.Community.Presentation"
+                  xmlns:xi="using:Rsdn.Xaml.Interactivity"
+                  xmlns:ctrl="using:Rsdn.Xaml.Controls"
+                  xmlns:tkctrl="using:Microsoft.Toolkit.Uwp.UI.Controls"
+                  xmlns:fa="using:FontAwesome.UWP"
+                  DataContext="{Binding Posts, Source={StaticResource PresenterLocator}}">
+ <Page.Resources>
+  <xi:PostTopicToIconConverter x:Key="PostTopicToIcon" />
+ </Page.Resources>
 
-  <view:ActivityView DataContext="{Binding}" />
-
-  <view:ThreadView Grid.Column="1"
-                   DataContext="{Binding CurrentThread}" />
- </Grid>
+ <ctrl:PullToRefreshMasterDetailsView ItemsSource="{Binding Threads}"
+                                      SelectedItem="{Binding CurrentThread, Mode=TwoWay}"
+                                      MasterHeader="{Binding}"
+                                      RefreshCommand="{Binding UpdateCommand}"
+                                      BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+  <tkctrl:MasterDetailsView.MasterHeaderTemplate>
+   <DataTemplate x:DataType="pm:ActivityPresenter">
+    <StackPanel Orientation="Horizontal"
+                Padding="12"
+                Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
+     <SymbolIcon Margin="2,0,14,0"
+                 Symbol="Mail" />
+     <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+                Text="{Binding Name}" />
+    </StackPanel>
+   </DataTemplate>
+  </tkctrl:MasterDetailsView.MasterHeaderTemplate>
+  <tkctrl:MasterDetailsView.MasterCommandBar>
+   <CommandBar ClosedDisplayMode="Minimal">
+    <AppBarButton Command="{Binding UpdateCommand}"
+                  Icon="Sync" />
+   </CommandBar>
+  </tkctrl:MasterDetailsView.MasterCommandBar>
+  <tkctrl:MasterDetailsView.ItemTemplate>
+   <DataTemplate x:DataType="pm:ThreadPresenter">
+    <p:ThreadSummary />
+   </DataTemplate>
+  </tkctrl:MasterDetailsView.ItemTemplate>
+  <tkctrl:MasterDetailsView.ItemContainerStyle>
+   <Style TargetType="ListViewItem">
+    <Setter Property="HorizontalContentAlignment"
+            Value="Stretch" />
+   </Style>
+  </tkctrl:MasterDetailsView.ItemContainerStyle>
+  <tkctrl:MasterDetailsView.DetailsTemplate>
+   <DataTemplate x:DataType="pm:ThreadPresenter">
+    <tkctrl:PullToRefreshListView ItemsSource="{Binding Posts}"
+                                  SelectedItem="{Binding CurrentPost, Mode=TwoWay}"
+                                  SelectionMode="None"
+                                  Name="PostsListView"
+                                  RefreshCommand="{Binding UpdateCommand}">
+     <ListView.Header>
+      <tkctrl:ScrollHeader Mode="QuickReturn"
+                           TargetListViewBase="{Binding ElementName=PostsListView}">
+       <StackPanel Orientation="Horizontal"
+                   Padding="12"
+                   Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
+        <fa:FontAwesome Width="28"
+                        Height="24"
+                        Margin="0,0,12,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="24"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                        Icon="{Binding Topic, Converter={StaticResource PostTopicToIcon}}" />
+        <TextBlock Text="{Binding Title}"
+                   Style="{ThemeResource SubtitleTextBlockStyle}" />
+       </StackPanel>
+      </tkctrl:ScrollHeader>
+     </ListView.Header>
+     <ListView.ItemTemplate>
+      <DataTemplate x:DataType="pm:PostPresenter">
+       <p:PostControl />
+      </DataTemplate>
+     </ListView.ItemTemplate>
+     <ListView.ItemContainerStyle>
+      <Style TargetType="ListViewItem">
+       <Setter Property="HorizontalContentAlignment"
+               Value="Stretch" />
+      </Style>
+     </ListView.ItemContainerStyle>
+    </tkctrl:PullToRefreshListView>
+   </DataTemplate>
+  </tkctrl:MasterDetailsView.DetailsTemplate>
+ </ctrl:PullToRefreshMasterDetailsView>
 </xa:NavigablePage>

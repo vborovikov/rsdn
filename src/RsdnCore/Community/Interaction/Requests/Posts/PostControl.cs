@@ -10,18 +10,28 @@
 
     public class PostControl :
         IQueryHandler<ThreadPostsQuery, IEnumerable<PostModel>>,
-        ICommandHandler<MarkThreadAsViewedCommand>
+        ICommandHandler<MarkThreadAsViewedCommand>,
+        IQueryHandler<PostsQuery, IEnumerable<ThreadModel>>
     {
         private readonly IPostGateway postGateway;
+        private readonly IUserGateway userGateway;
+        private readonly ICredentialManager credentialMan;
 
-        public PostControl(IPostGateway postGateway)
+        public PostControl(IPostGateway postGateway, IUserGateway userGateway, ICredentialManager credentialMan)
         {
             this.postGateway = postGateway;
+            this.userGateway = userGateway;
+            this.credentialMan = credentialMan;
         }
 
         public void Execute(MarkThreadAsViewedCommand command)
         {
             this.postGateway.MarkThreadAsViewed(command.ThreadId);
+        }
+
+        public IEnumerable<ThreadModel> Run(PostsQuery query)
+        {
+            return this.userGateway.GetActivity(this.credentialMan.User.Id);
         }
 
         public IEnumerable<PostModel> Run(ThreadPostsQuery query)
