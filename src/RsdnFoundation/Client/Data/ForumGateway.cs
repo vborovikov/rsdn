@@ -12,6 +12,7 @@
     {
         private const int MaxSidebarForumCount = 6;
         private static readonly IMapper mapper;
+        private readonly ICredentialManager credentialMan;
 
         static ForumGateway()
         {
@@ -26,8 +27,9 @@
             mapper = mapperConfig.CreateMapper();
         }
 
-        public ForumGateway()
+        public ForumGateway(ICredentialManager credentialMan)
         {
+            this.credentialMan = credentialMan;
         }
 
         public IEnumerable<ForumModel> GetForums()
@@ -88,24 +90,7 @@
                               join rating in db.Ratings on post.Id equals rating.ThreadId into ratings
                               join thread in db.Threads on post.Id equals thread.ThreadId
                               orderby post.Updated descending, post.Posted descending
-                              select new ThreadModel
-                              {
-                                  Id = post.Id,
-                                  Title = post.Title,
-                                  Excerpt = post.Message,
-                                  Username = post.Username,
-                                  Updated = post.Updated ?? post.Posted,
-                                  Viewed = thread.Viewed,
-                                  NewPostCount = thread.NewPostCount,
-                                  PostCount = thread.PostCount,
-                                  InterestingCount = ratings.Count(r => r.Value == (int)VoteValue.Interesting),
-                                  ThanksCount = ratings.Count(r => r.Value == (int)VoteValue.Thanks),
-                                  ExcellentCount = ratings.Count(r => r.Value == (int)VoteValue.Excellent),
-                                  AgreedCount = ratings.Count(r => r.Value == (int)VoteValue.Agreed),
-                                  DisagreedCount = ratings.Count(r => r.Value == (int)VoteValue.Disagreed),
-                                  Plus1Count = ratings.Count(r => r.Value == (int)VoteValue.Plus1),
-                                  FunnyCount = ratings.Count(r => r.Value == (int)VoteValue.Funny),
-                              };
+                              select CreateThreadModel(thread, post, ratings);
 
                 return threads.ToArray();
             }
@@ -163,6 +148,32 @@
                 var forum = db.Forums.Find(forumId);
                 return mapper.Map<ForumModel>(forum);
             }
+        }
+
+        private ThreadModel CreateThreadModel(DbThread thread, DbPost post, IEnumerable<DbRating> ratings)
+        {
+            var threadModel = post.UserId == this.credentialMan.User.Id ?
+                new PostActivityModel() :
+                new ThreadModel();
+
+            threadModel.Id = post.Id;
+            threadModel.Title = post.Title;
+            threadModel.Excerpt = post.Message;
+            threadModel.UserId = post.UserId;
+            threadModel.Username = post.Username;
+            threadModel.Updated = post.Updated ?? post.Posted;
+            threadModel.Viewed = thread.Viewed;
+            threadModel.NewPostCount = thread.NewPostCount;
+            threadModel.PostCount = thread.PostCount;
+            threadModel.InterestingCount = ratings.Count(r => r.Value == (int)VoteValue.Interesting);
+            threadModel.ThanksCount = ratings.Count(r => r.Value == (int)VoteValue.Thanks);
+            threadModel.ExcellentCount = ratings.Count(r => r.Value == (int)VoteValue.Excellent);
+            threadModel.AgreedCount = ratings.Count(r => r.Value == (int)VoteValue.Agreed);
+            threadModel.DisagreedCount = ratings.Count(r => r.Value == (int)VoteValue.Disagreed);
+            threadModel.Plus1Count = ratings.Count(r => r.Value == (int)VoteValue.Plus1);
+            threadModel.FunnyCount = ratings.Count(r => r.Value == (int)VoteValue.Funny);
+
+            return threadModel;
         }
 
         private void ChangeFavorite(int forumId, bool flag)

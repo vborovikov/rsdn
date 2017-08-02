@@ -103,8 +103,19 @@
             {
                 var markup = RsdnMarkupReference.Current.Parse(this.Model.Excerpt);
 
-                //todo: determine first if it's user's own post or a reply
-                this.Topic = ThreadOrganizer.DeterminePostTopic(markup, this.Model.Title);
+                if (this.Model is PostActivityModel)
+                {
+                    this.Topic = PostTopic.Post;
+                }
+                else if (this.Model is ReplyActivityModel)
+                {
+                    this.Topic = PostTopic.Reply;
+                }
+                else
+                {
+                    this.Topic = ThreadOrganizer.DeterminePostTopic(markup, this.Model.Title);
+                }
+
                 this.Excerpt = String.Join(Environment.NewLine, markup.ToString()
                     .Split(Environment.NewLine.ToArray(), StringSplitOptions.RemoveEmptyEntries)
                     .Where(line => String.IsNullOrWhiteSpace(line) == false)
